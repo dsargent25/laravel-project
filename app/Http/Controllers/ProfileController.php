@@ -57,4 +57,9 @@ class ProfileController extends Controller
 
         return Redirect::to('/');
     }
+
+    // /* Assigns the user's profile url. */
+    // public function imgedit(){
+
+    // }
 }
