@@ -22,7 +22,7 @@
                         {{ __('Recent Chirps') }}
                 </x-nav-link>
                 <x-nav-link :href="route('chirps.all')" :active="request()->routeIs('chirps.all')">
-                        {{ __('All Chirps') }}
+                        {{ __('All Chirpers') }}
                 </x-nav-link>
                 <x-nav-link :href="route('chirps.profile')" :active="request()->routeIs('chirps.profile')">
                         {{ __('Profile Page') }}
