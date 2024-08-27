@@ -7,6 +7,7 @@ use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\View\View;
@@ -40,21 +41,17 @@ class ChirpController extends Controller
     {
         $userId = Auth::user()->id;
         $chirps = Chirp::latest()->where('user_id', '=', $userId)->get();
-
         return view('chirps.profile', ['chirps' => $chirps]);
 
     }
 
 
-    public function user(): View
+    public function user($name): View
     {
 
-        // $userName = User::user()->id;
-        $chirps = User::latest()->where('name', '=', $userName)->get();
-
-        return view('chirps.profile', ['chirps' => $chirps]);
-
-        dd();
+        $userAttrs = User::where('name', '=', $name)->get()->first()->id;
+        $chirps = Chirp::latest()->where('user_id', '=', $userAttrs)->get();
+        return view('chirps.user', ['chirps' => $chirps]);
 
     }
 
