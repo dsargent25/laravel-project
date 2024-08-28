@@ -5,10 +5,10 @@
                     <div class="flex-1">
                         <div class="flex justify-between items-center">
                             <div>
-                                <a href="/user/{{ $chirp->user->name }}">
+                                <a href="/chirps/user/{{ $chirp->user->name }}">
                                 <img width="50" height="50" src=" {{$chirp->user->profile_image_url}}">
                                 </a>
-                                <a href="/user/{{ $chirp->user->name }}">
+                                <a href="/chirps/user/{{ $chirp->user->name }}">
                                 <span class="text-gray-800">{{ $chirp->user->name }}</span>
                                 </a>
                                 <small class="ml-2 text-sm text-gray-600">{{ $chirp->created_at->format('j M Y, g:i a') }}</small>

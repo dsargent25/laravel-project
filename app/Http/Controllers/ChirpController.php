@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Chirp;
+use App\Models\Comment;
 use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -22,10 +23,16 @@ class ChirpController extends Controller
     public function index(): View
     {
         return view('chirps.index',[
-	'chirps' => Chirp::with('user')->latest()->get(),
+	        'chirps' => Chirp::with('user')->latest()->get(),
+
 	]);
 
     
+    }
+
+    public function show(Chirp $chirp)
+    {
+     //   
     }
 
     public function all(User $user): View
@@ -51,7 +58,8 @@ class ChirpController extends Controller
 
         $userAttrs = User::where('name', '=', $name)->get()->first()->id;
         $chirps = Chirp::latest()->where('user_id', '=', $userAttrs)->get();
-        return view('chirps.user', ['chirps' => $chirps]);
+        $userAccs = User::where('name', '=', $name)->latest()->get()->first();
+        return view('chirps.user', ['chirps' => $chirps], ['users' => $userAccs]);
 
     }
 
@@ -79,14 +87,6 @@ class ChirpController extends Controller
     $users->increment('chirp_count', 1 );
 
 	return redirect(route('chirps.index'));
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(Chirp $chirp)
-    {
-        //
     }
 
     public function latest(Chirp $chirp): View

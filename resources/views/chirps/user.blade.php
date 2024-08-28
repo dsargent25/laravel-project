@@ -2,26 +2,26 @@
     <div class="mt-6 bg-white shadow-sm rounded-lg divide-y">
 
 
-               {{-- <div class="p-6 flex space-x-2">
+               <div class="p-6 flex space-x-2">
                     <div class="flex-1">
                         <div class="flex justify-between items-center py-6">
                             <div>
-                                <a href="/user/{{$user->name}}">
-                                <img width='100' height="100"src="{{$user->profile_image_url}}">
+                                <a href="/chirps/user/{{$users->name}}">
+                                <img width='100' height="100"src="{{$users->profile_image_url}}">
                                 </a>
                             </div>
                             <div>
-                                <a href="/user/{{$user->name}}">{{$user->name}}</a>
+                                <a href="/chirps/user/{{$users->name}}">{{$users->name}}</a>
                             </div>
                             <div>
-                                <p>{{$user->created_at}}</p>
+                                <p>{{$users->created_at}}</p>
                             </div>
                             <div>
-                                <p>{{$user->chirp_count}}</p>
+                                <p>{{$users->chirp_count}}</p>
                             </div>
                         </div>
                     </div>
-                </div> --}}
+                </div>
 
 
                 @foreach ($chirps as $chirp)

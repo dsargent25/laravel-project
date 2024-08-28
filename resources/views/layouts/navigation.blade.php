@@ -25,7 +25,7 @@
                         {{ __('All Chirpers') }}
                 </x-nav-link>
                 <x-nav-link :href="route('chirps.profile')" :active="request()->routeIs('chirps.profile')">
-                        {{ __('Profile Page') }}
+                        {{ __('My Profile Page') }}
                 </x-nav-link>
 
 
@@ -97,7 +97,7 @@
                     {{ __('All Chirpers') }}
             </x-responsive-nav-link>
             <x-responsive-nav-link :href="route('chirps.profile')" :active="request()->routeIs('chirps.profile')">
-                    {{ __('Profile Page') }}
+                    {{ __('My Profile Page') }}
             </x-responsive-nav-link>
 
         </div>
