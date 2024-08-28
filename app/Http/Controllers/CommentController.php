@@ -44,7 +44,9 @@ class CommentController extends Controller
                 'content' => request()->get('content')
             ]);
 
-            return redirect()->route('chirps.index');
+            return redirect(route('chirps.index'));
+
+
     }
 
     /**

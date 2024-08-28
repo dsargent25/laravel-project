@@ -56,12 +56,22 @@
                             <p class="mt-4 text-lg text-gray-900">{{ $chirp->message }}</p>
                         </div>
                     </div>
+
+
                     <form action="{{ route("chirps.comments.store", $chirp->id)}}" method="POST">
                         @csrf
                         <textarea name="content" class="form-control"></textarea>
                         <button type="submit" >Button</button>
                     </form>
+
+                    @foreach($chirp->comment as $comment)
+                        <p>{{ $comment->user_id }}</p>
+                        <p>{{ $comment->content }}</p>
+                    @endforeach
+
                 @endforeach
+
+
             </div>
 
 </x-app-layout>
