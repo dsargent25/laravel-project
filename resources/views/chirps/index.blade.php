@@ -53,21 +53,40 @@
                                     </x-slot>
                                 </x-dropdown>
                             @endif
-                            <p class="mt-4 text-lg text-gray-900">{{ $chirp->message }}</p>
+                            <p class="text-lg text-gray-900">" {{ $chirp->message }} "</p>
                         </div>
                     </div>
 
+                    <h3 class="px-5 text-l text-gray-600 font-bold">Comments:</h3>
 
-                    <form action="{{ route("chirps.comments.store", $chirp->id)}}" method="POST">
-                        @csrf
-                        <textarea name="content" class="form-control"></textarea>
-                        <button type="submit" >Button</button>
-                    </form>
+                    <div style=" padding: 10px 10px; height:200px; overflow-y:scroll;">
 
                     @foreach($chirp->comment as $comment)
-                        <p>{{ $comment->user_id }}</p>
-                        <p>{{ $comment->content }}</p>
+                    <div class="px-5">
+                        <p class="leading-3 ml-2 text-sm text-gray-600">User {{ $comment->user_id }} chirps: {{ $comment->content }}</p>
+                    </div>
+
+                    @if ($chirp->user->is(auth()->user()))
+                    <form method="POST" action="{{ route('comments.destroy', $comment) }}">
+                        @csrf
+                        @method('delete')
+                        <button class=" text-red-600 text-xs px-6" :href="route('comments.destroy', $comment)" onclick="event.preventDefault(); this.closest('form').submit();">Delete Comment</button>
+                    </form>
+                    @endif
+
                     @endforeach
+
+                    </div>
+
+                    <div class="px-5">
+                    
+                    <form action="{{ route("chirps.comments.store", $chirp->id)}}" method="POST"
+                        class="block w-full border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm">
+                        @csrf
+                        <textarea name="content" class="form-control"></textarea><br>
+                        <x-primary-button type="submit" class="mt-1">{{ __('Comment') }}</x-primary-button>
+                    </form>
+                    </div>
 
                 @endforeach
 

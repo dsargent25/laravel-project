@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('chirp_id')->constrained()->cascadeOnDelete();
             $table->foreignId('user_id')->constrained()->cascadeOnDelete();
-            $table->string('content');
+            $table->string('content')->nullable();
             $table->timestamps();
         });
     }
