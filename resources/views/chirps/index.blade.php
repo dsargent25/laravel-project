@@ -59,7 +59,7 @@
 
                     <h3 class="px-5 text-l text-gray-600 font-bold">Comments:</h3>
 
-                    <div style=" padding: 10px 10px; height:200px; overflow-y:scroll;">
+                    <div style=" padding: 10px 10px; height:150px; overflow-y:scroll;">
 
                     @foreach($chirp->comment as $comment)
                     <div class="px-5">
