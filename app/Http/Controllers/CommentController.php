@@ -39,13 +39,10 @@ class CommentController extends Controller
     {
 
             Comment::create([
-                'user_id' = auth()->user()->id,
+                'user_id' => Auth::user()->id,
+                'chirp_id' => $chirp->id,
+                'content' => request()->get('content')
             ]);
-
-            $comment = new Comment();
-            $comment->chirp_id = $chirp->id;
-            $comment->content = request()->get('content');
-            $comment->save();
 
             return redirect()->route('chirps.index');
     }
