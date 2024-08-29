@@ -29,10 +29,12 @@
                     @foreach ($users as $user)
                         <div class="flex justify-between items-center py-6">
                             <div>
+                                <a href="/chirps/user/{{$user->name}}">
                                 <img width='100' height="100"src="{{$user->profile_image_url}}">
+                                </a>
                             </div>
                             <div>
-                                <p>{{$user->name}}</p>
+                                <a href="/chirps/user/{{$user->name}}">{{$user->name}}</a>
                             </div>
                             <div>
                                 <p>{{$user->created_at}}</p>
