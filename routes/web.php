@@ -34,4 +34,10 @@ Route::get('chirps/all', [ChirpController::class, 'all'])->name('chirps.all');
 Route::get('chirps/user/{id}', [ChirpController::class, 'user'])->name('chirps.user');
 //End of Route for Displaying a Chirper's Profile
 
+//Routes for Creating, Storing, and Destroying Comments
+Route::get('chirps/{chirp}/comments/create', [CommentController::class, 'create'])->name('chirps.comments.create');
+Route::post('chirps/{chirp}/comments', [CommentController::class, 'store'])->name('chirps.comments.store');
+Route::delete('/comments/{comment}', [CommentController::class, 'destroy'])->name('comments.destroy');
+//End of Routes for Creating, Storing, and Destroying Comments
+
 require __DIR__.'/auth.php';

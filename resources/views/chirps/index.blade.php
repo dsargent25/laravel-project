@@ -56,7 +56,22 @@
                             <p class="text-lg text-gray-900">" {{ $chirp->message }} "</p>
                         </div>
                     </div>
+
                     </div>
+
+                    <div class="px-5">
+                    
+                    <form action="{{ route("chirps.comments.store", $chirp->id)}}" method="POST"
+                        class="block w-full border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm">
+                        @csrf
+                        <textarea name="content" class="form-control"></textarea><br>
+                        <x-primary-button type="submit" class="mt-1">{{ __('Comment') }}</x-primary-button>
+                    </form>
+                    </div>
+
                 @endforeach
+
+
             </div>
+
 </x-app-layout>
