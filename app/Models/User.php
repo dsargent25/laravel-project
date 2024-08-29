@@ -20,9 +20,7 @@ class User extends Authenticatable
     protected $fillable = [
         'name',
         'email',
-        'password',
-        'profile_image_url',
-        'chirp_count'
+        'password'
     ];
 
     /**
@@ -53,8 +51,4 @@ class User extends Authenticatable
        return $this->hasMany(Chirp::class);
     }
 
-    public function comment(): HasMany
-    {
-     return $this->hasMany(Comment::class);
-    }
 }
