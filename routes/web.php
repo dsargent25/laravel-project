@@ -26,11 +26,4 @@ Route::put('chirps/{chirp}', [ChirpController::class, 'update'])->name('chirps.u
 Route::delete('chirps/{chirp}', [ChirpController::class, 'destroy'])->name('chirps.destroy');
 Route::get('chirps/latest', [ChirpController::class, 'latest'])->name('chirps.latest');
 Route::get('chirps/all', [ChirpController::class, 'all'])->name('chirps.all');
-Route::get('chirps/profile', [ChirpController::class, 'profile'])->name('chirps.profile');
-Route::get('chirps/user/{id}', [ChirpController::class, 'user'])->name('chirps.user');
-
-Route::get('chirps/{chirp}/comments', [CommentController::class, 'index'])->name('chirps.comments.index');
-Route::post('chirps/{chirp}/comments', [CommentController::class, 'store'])->name('chirps.comments.store');
-Route::delete('/comments/{comment}', [CommentController::class, 'destroy'])->name('comments.destroy');
-
 require __DIR__.'/auth.php';

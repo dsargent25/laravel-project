@@ -21,15 +21,6 @@
                 <x-nav-link :href="route('chirps.latest')" :active="request()->routeIs('chirps.latest')">
                         {{ __('Recent Chirps') }}
                 </x-nav-link>
-                <x-nav-link :href="route('chirps.all')" :active="request()->routeIs('chirps.all')">
-                        {{ __('All Chirpers') }}
-                </x-nav-link>
-                <x-nav-link :href="route('chirps.profile')" :active="request()->routeIs('chirps.profile')">
-                        {{ __('My Profile Page') }}
-                </x-nav-link>
-
-
-
 
                 </div>
             </div>
@@ -93,13 +84,6 @@
             <x-responsive-nav-link :href="route('chirps.latest')" :active="request()->routeIs('chirps.latest')">
                     {{ __('Recent Chirps') }}
             </x-responsive-nav-link>
-            <x-responsive-nav-link :href="route('chirps.all')" :active="request()->routeIs('chirps.all')">
-                    {{ __('All Chirpers') }}
-            </x-responsive-nav-link>
-            <x-responsive-nav-link :href="route('chirps.profile')" :active="request()->routeIs('chirps.profile')">
-                    {{ __('My Profile Page') }}
-            </x-responsive-nav-link>
-
         </div>
 
         <!-- Responsive Settings Options -->

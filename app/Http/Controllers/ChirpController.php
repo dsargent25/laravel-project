@@ -43,26 +43,6 @@ class ChirpController extends Controller
 
     }
 
-
-    public function profile(User $user): View
-    {
-        $userId = Auth::user()->id;
-        $chirps = Chirp::latest()->where('user_id', '=', $userId)->get();
-        return view('chirps.profile', ['chirps' => $chirps]);
-
-    }
-
-
-    public function user($name): View
-    {
-
-        $userAttrs = User::where('name', '=', $name)->get()->first()->id;
-        $chirps = Chirp::latest()->where('user_id', '=', $userAttrs)->get();
-        $userAccs = User::where('name', '=', $name)->latest()->get()->first();
-        return view('chirps.user', ['chirps' => $chirps], ['users' => $userAccs]);
-
-    }
-
     /**
      * Show the form for creating a new resource.
      */
@@ -82,19 +62,13 @@ class ChirpController extends Controller
 
 	$request->user()->chirps()->create($validated);
 
-    $userid = Auth::user()->id;
-    $users = User::find($userid);
-    $users->increment('chirp_count', 1 );
-
 	return redirect(route('chirps.index'));
     }
 
     public function latest(Chirp $chirp): View
     {
         $pastSevenDays = Carbon::now()->subDays(7);
-        
         $chirps = Chirp::latest()->where('created_at', '>', $pastSevenDays)->get();
-
         return view('chirps.latest', ['chirps' => $chirps]);
 
     }
@@ -136,10 +110,6 @@ class ChirpController extends Controller
         Gate::authorize('delete', $chirp);
 
         $chirp->delete();
-
-        $userid = Auth::user()->id;
-        $users = User::find($userid);
-        $users->decrement('chirp_count', 1 );
 
         return redirect(route('chirps.index'));
     }
