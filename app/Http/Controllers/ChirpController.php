@@ -52,6 +52,7 @@ class ChirpController extends Controller
     /**
      * Show the form for creating a new resource.
      */
+
     public function create()
     {
         //
@@ -126,5 +127,15 @@ class ChirpController extends Controller
         $users->decrement('chirp_count', 1 );
 
         return redirect(route('chirps.index'));
+    }
+
+    public function user($name): View
+    {
+
+        $userAttrs = User::where('name', '=', $name)->get()->first()->id;
+        $chirps = Chirp::latest()->where('user_id', '=', $userAttrs)->get();
+        $userAccs = User::where('name', '=', $name)->latest()->get()->first();
+        return view('chirps.user', ['chirps' => $chirps], ['users' => $userAccs]);
+
     }
 }

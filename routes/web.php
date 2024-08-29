@@ -30,4 +30,8 @@ Route::get('chirps/latest', [ChirpController::class, 'latest'])->name('chirps.la
 Route::get('chirps/all', [ChirpController::class, 'all'])->name('chirps.all'); 
 //End of Route for Displaying All Chirpers
 
+//Route for Displaying a Chirper's Profile
+Route::get('chirps/user/{id}', [ChirpController::class, 'user'])->name('chirps.user');
+//End of Route for Displaying a Chirper's Profile
+
 require __DIR__.'/auth.php';
