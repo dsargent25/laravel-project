@@ -1,5 +1,6 @@
 <x-app-layout>
 
+{{-- View Added for All Chirpers --}}
 <div class="mt-6 bg-white shadow-sm rounded-lg divide-y">
                 <div class="p-6 flex space-x-2">
                     <div class="flex-1">
@@ -28,12 +29,10 @@
                     @foreach ($users as $user)
                         <div class="flex justify-between items-center py-6">
                             <div>
-                                <a href="/chirps/user/{{$user->name}}">
                                 <img width='100' height="100"src="{{$user->profile_image_url}}">
-                                </a>
                             </div>
                             <div>
-                                <a href="/chirps/user/{{$user->name}}">{{$user->name}}</a>
+                                <p>{{$user->name}}</p>
                             </div>
                             <div>
                                 <p>{{$user->created_at}}</p>
@@ -46,4 +45,5 @@
                     </div>
                 </div>
         </div>
+{{-- End of View Added for All Chirpers --}}
 </x-app-layout>

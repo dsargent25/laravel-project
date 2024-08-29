@@ -35,6 +35,10 @@ class ChirpController extends Controller
      //   
     }
 
+
+
+//Chirp All Chirpers Method
+
     public function all(User $user): View
     {
 
@@ -42,6 +46,8 @@ class ChirpController extends Controller
         return view('chirps.all', ['users' => $users]);
 
     }
+
+//End of Chirp All Chirpers Method
 
     /**
      * Show the form for creating a new resource.
@@ -61,6 +67,10 @@ class ChirpController extends Controller
 	]);
 
 	$request->user()->chirps()->create($validated);
+
+    $userid = Auth::user()->id;
+    $users = User::find($userid);
+    $users->increment('chirp_count', 1 );
 
 	return redirect(route('chirps.index'));
     }
@@ -110,6 +120,10 @@ class ChirpController extends Controller
         Gate::authorize('delete', $chirp);
 
         $chirp->delete();
+
+        $userid = Auth::user()->id;
+        $users = User::find($userid);
+        $users->decrement('chirp_count', 1 );
 
         return redirect(route('chirps.index'));
     }

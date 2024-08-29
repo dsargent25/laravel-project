@@ -25,5 +25,9 @@ Route::get('chirps/{chirp}/edit', [ChirpController::class, 'edit'])->name('chirp
 Route::put('chirps/{chirp}', [ChirpController::class, 'update'])->name('chirps.update');
 Route::delete('chirps/{chirp}', [ChirpController::class, 'destroy'])->name('chirps.destroy');
 Route::get('chirps/latest', [ChirpController::class, 'latest'])->name('chirps.latest');
-Route::get('chirps/all', [ChirpController::class, 'all'])->name('chirps.all');
+
+//Route for Displaying All Chirpers
+Route::get('chirps/all', [ChirpController::class, 'all'])->name('chirps.all'); 
+//End of Route for Displaying All Chirpers
+
 require __DIR__.'/auth.php';

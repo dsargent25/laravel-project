@@ -20,6 +20,7 @@ return new class extends Migration
             $table->rememberToken();
             $table->timestamps();
             $table->string('profile_image_url');
+            $table->integer('chirp_count');
         });
 
         Schema::create('password_reset_tokens', function (Blueprint $table) {
