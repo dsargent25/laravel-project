@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -21,8 +22,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
-        'profile_image_url',
-        'chirp_count'
+        'profile_image_url'
     ];
 
     /**
@@ -53,9 +53,9 @@ class User extends Authenticatable
        return $this->hasMany(Chirp::class);
     }
 
-    public function comment(): HasMany
+    public function comments(): HasManyThrough
     {
-     return $this->hasMany(Comment::class);
+     return $this->hasManyThrough(Comment::class, Chirp::class);
     }
 
 }

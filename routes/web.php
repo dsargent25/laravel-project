@@ -3,13 +3,14 @@
 use App\Http\Controllers\ChirpController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    return view('welcome');
-});
+    return view('guest');
+})->middleware(['guest'])->name('guest');
 
-Route::get('/dashboard', function () {
+Route::get('/', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
@@ -27,11 +28,11 @@ Route::delete('chirps/{chirp}', [ChirpController::class, 'destroy'])->name('chir
 Route::get('chirps/latest', [ChirpController::class, 'latest'])->name('chirps.latest');
 
 //Route for Displaying All Chirpers
-Route::get('chirps/all', [ChirpController::class, 'all'])->name('chirps.all'); 
+Route::get('users/', [UserController::class, 'index'])->name('user.index'); 
 //End of Route for Displaying All Chirpers
 
 //Route for Displaying a Chirper's Profile
-Route::get('chirps/user/{id}', [ChirpController::class, 'user'])->name('chirps.user');
+Route::get('/user/{id}', [UserController::class, 'show'])->name('user.show');
 //End of Route for Displaying a Chirper's Profile
 
 //Routes for Creating, Storing, and Destroying Comments

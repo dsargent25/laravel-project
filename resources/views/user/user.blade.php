@@ -6,12 +6,12 @@
                     <div class="flex-1">
                         <div class="flex justify-between items-center py-6">
                             <div>
-                                <a href="/chirps/user/{{$users->name}}">
+                                <a href="/user/{{$users->name}}">
                                 <img width='100' height="100"src="{{$users->profile_image_url}}">
                                 </a>
                             </div>
                             <div>
-                                <a href="/chirps/user/{{$users->name}}">{{$users->name}}</a>
+                                <a href="/user/{{$users->name}}">{{$users->name}}</a>
                             </div>
                             <div>
                                 <p>{{$users->created_at}}</p>

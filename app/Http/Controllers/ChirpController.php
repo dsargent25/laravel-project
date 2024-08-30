@@ -36,19 +36,6 @@ class ChirpController extends Controller
     }
 
 
-
-//Chirp All Chirpers Method
-
-    public function all(User $user): View
-    {
-
-        $users = User::latest()->get();
-        return view('chirps.all', ['users' => $users]);
-
-    }
-
-//End of Chirp All Chirpers Method
-
     /**
      * Show the form for creating a new resource.
      */
@@ -129,13 +116,4 @@ class ChirpController extends Controller
         return redirect(route('chirps.index'));
     }
 
-    public function user($name): View
-    {
-
-        $userAttrs = User::where('name', '=', $name)->get()->first()->id;
-        $chirps = Chirp::latest()->where('user_id', '=', $userAttrs)->get();
-        $userAccs = User::where('name', '=', $name)->latest()->get()->first();
-        return view('chirps.user', ['chirps' => $chirps], ['users' => $userAccs]);
-
-    }
 }

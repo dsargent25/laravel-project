@@ -6,6 +6,7 @@ use App\Models\Comment;
 use App\Models\Chirp;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 
 
 class CommentController extends Controller
@@ -35,8 +36,11 @@ class CommentController extends Controller
     }
 
 
-    public function destroy()
+    public function destroy(Comment $comment)
     {
-        //
+        Gate::authorize('delete', $comment);
+        $comment->delete();
+
+        return redirect(route('chirps.index'));
     }
 }
