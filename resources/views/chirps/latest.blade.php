@@ -1,12 +1,16 @@
 <x-app-layout>
-<div class="mt-6 bg-white shadow-sm rounded-lg divide-y">
+<div class="mt-6 bg-white shadow-sm rounded-lg divide-y" style="background-color:aliceblue;">
             @foreach ($chirps as $chirp)
                 <div class="p-6 flex space-x-2">
                     <div class="flex-1">
                         <div class="flex justify-between items-center">
                             <div>
+                                <a href="/user/{{ $chirp->user->name }}">
                                 <img width="50" height="50" src=" {{$chirp->user->profile_image_url}}">
+                                </a>
+                                <a href="/user/{{ $chirp->user->name }}">
                                 <span class="text-gray-800">{{ $chirp->user->name }}</span>
+                                </a>
                                 <small class="ml-2 text-sm text-gray-600">{{ $chirp->created_at->format('j M Y, g:i a') }}</small>
                             </div>
                         </div>

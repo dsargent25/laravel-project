@@ -8,17 +8,22 @@
                 class="block w-full border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm"
             >{{ old('message') }}</textarea>
             <x-input-error :messages="$errors->get('message')" class="mt-2" />
-            <x-primary-button class="mt-4">{{ __('Chirp') }}</x-primary-button>
+            <x-primary-button class="mt-4" style="background-color:#26A7DE;">{{ __('Chirp') }}</x-primary-button>
         </form>
     </div>
 
-       <div class="mt-6 bg-white shadow-sm rounded-lg divide-y">
+       <div class="mt-6 bg-white shadow-sm rounded-lg divide-y" style="background-color:aliceblue;">
             @foreach ($chirps as $chirp)
                 <div class="p-6 flex space-x-2">                    
                     <div class="flex-1">
                         <div class="flex justify-between items-center">
                             <div>
+                                <a href="/user/{{ $chirp->user->name }}">
+                                <img width="50" height="50" src=" {{$chirp->user->profile_image_url}}">
+                                </a>
+                                <a href="/user/{{ $chirp->user->name }}">
                                     <span class="text-gray-800">{{ $chirp->user->name }}</span>
+                                </a>
                                 <small class="ml-2 text-sm text-gray-600">{{ $chirp->created_at->format('j M Y, g:i a') }}</small>
                             </div>
  				                @unless ($chirp->created_at->eq($chirp->updated_at))
@@ -51,6 +56,32 @@
                             <p class="text-lg text-gray-900">" {{ $chirp->message }} "</p>
                         </div>
                     </div>
+
+                    <h3 class="px-5 text-l text-gray-600 font-bold">Comments:</h3>
+
+                    <div style=" padding: 10px 10px; height:150px; overflow-y:scroll;">
+
+                    @foreach($chirp->comment as $comment)
+                    <div class="px-5">
+                        <p class="leading-3 ml-2 text-sm text-gray-600">{{ $comment->user->name }} chirps: {{ $comment->content }}</p>
+                    </div>
+
+                    @if ($comment->user->is(auth()->user()))
+                    <form method="POST" action="{{ route('comments.destroy', $comment) }}">
+                        @csrf
+                        @method('delete')
+                        <button class=" text-red-600 text-xs px-6" :href="route('comments.destroy', $comment)" onclick="event.preventDefault(); this.closest('form').submit();">Delete Comment</button>
+                    </form>
+                    @endif
+                    @endforeach
+                    </div>
+                    <div class="px-5">
+                    <form action="{{ route("chirps.comments.store", $chirp->id)}}" method="POST"
+                        class="block w-full border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm">
+                        @csrf
+                        <textarea name="content" class="form-control"></textarea><br>
+                        <x-primary-button type="submit" class="mt-1" style="background-color:#26A7DE;">{{ __('Comment') }}</x-primary-button>
+                    </form>
                     </div>
                 @endforeach
             </div>

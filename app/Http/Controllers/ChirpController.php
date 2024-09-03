@@ -26,7 +26,6 @@ class ChirpController extends Controller
 	        'chirps' => Chirp::with('user')->latest()->get(),
 
 	]);
-
     
     }
 
@@ -35,17 +34,11 @@ class ChirpController extends Controller
      //   
     }
 
-    public function all(User $user): View
-    {
-
-        $users = User::latest()->get();
-        return view('chirps.all', ['users' => $users]);
-
-    }
 
     /**
      * Show the form for creating a new resource.
      */
+
     public function create()
     {
         //
@@ -65,7 +58,7 @@ class ChirpController extends Controller
 	return redirect(route('chirps.index'));
     }
 
-    public function latest(Chirp $chirp): View
+    public function latest(): View
     {
         $pastSevenDays = Carbon::now()->subDays(7);
         $chirps = Chirp::latest()->where('created_at', '>', $pastSevenDays)->get();
@@ -113,4 +106,5 @@ class ChirpController extends Controller
 
         return redirect(route('chirps.index'));
     }
+
 }
