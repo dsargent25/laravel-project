@@ -26,7 +26,6 @@ class ChirpController extends Controller
 	        'chirps' => Chirp::with('user')->latest()->get(),
 
 	]);
-
     
     }
 
@@ -58,12 +57,11 @@ class ChirpController extends Controller
 
     $userid = Auth::user()->id;
     $users = User::find($userid);
-    $users->increment('chirp_count', 1 );
 
 	return redirect(route('chirps.index'));
     }
 
-    public function latest(Chirp $chirp): View
+    public function latest(): View
     {
         $pastSevenDays = Carbon::now()->subDays(7);
         $chirps = Chirp::latest()->where('created_at', '>', $pastSevenDays)->get();
@@ -110,9 +108,7 @@ class ChirpController extends Controller
         $chirp->delete();
 
         $userid = Auth::user()->id;
-        $users = User::find($userid);
-        $users->decrement('chirp_count', 1 );
-
+        
         return redirect(route('chirps.index'));
     }
 
