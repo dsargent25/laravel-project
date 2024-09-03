@@ -4,19 +4,15 @@ namespace App\Http\Controllers;
 
 use App\Models\Comment;
 use App\Models\Chirp;
+use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Http\RedirectResponse;
 
 
 class CommentController extends Controller
 {
-
-
-    public function create(Chirp $chirp)
-    {
-        //
-    }
 
     public function store(Chirp $chirp)
     {
@@ -36,9 +32,10 @@ class CommentController extends Controller
     }
 
 
-    public function destroy(Comment $comment)
+    public function destroy(Comment $comment): RedirectResponse
     {
         Gate::authorize('delete', $comment);
+
         $comment->delete();
 
         return redirect(route('chirps.index'));

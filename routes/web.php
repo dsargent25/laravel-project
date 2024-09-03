@@ -20,25 +20,34 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-Route::get('chirps/', [ChirpController::class, 'index'])->name('chirps.index');
-Route::post('chirps/', [ChirpController::class, 'store'])->name('chirps.store');
-Route::get('chirps/{chirp}/edit', [ChirpController::class, 'edit'])->name('chirps.edit');
-Route::put('chirps/{chirp}', [ChirpController::class, 'update'])->name('chirps.update');
-Route::delete('chirps/{chirp}', [ChirpController::class, 'destroy'])->name('chirps.destroy');
-Route::get('chirps/latest', [ChirpController::class, 'latest'])->name('chirps.latest');
 
-//Route for Displaying All Chirpers
-Route::get('users/', [UserController::class, 'index'])->name('user.index'); 
-//End of Route for Displaying All Chirpers
+Route::group(['middleware' => ['auth']], function(){
+    Route::get('chirps/', [ChirpController::class, 'index'])->name('chirps.index');
+    Route::post('chirps/', [ChirpController::class, 'store'])->name('chirps.store');
+    Route::get('chirps/{chirp}/edit', [ChirpController::class, 'edit'])->name('chirps.edit');
+    Route::put('chirps/{chirp}', [ChirpController::class, 'update'])->name('chirps.update');
+    Route::delete('chirps/{chirp}', [ChirpController::class, 'destroy'])->name('chirps.destroy');
+    Route::get('chirps/latest', [ChirpController::class, 'latest'])->name('chirps.latest');
 
-//Route for Displaying a Chirper's Profile
-Route::get('/user/{id}', [UserController::class, 'show'])->name('user.show');
-//End of Route for Displaying a Chirper's Profile
+});
 
-//Routes for Creating, Storing, and Destroying Comments
-Route::get('chirps/{chirp}/comments/create', [CommentController::class, 'create'])->name('chirps.comments.create');
-Route::post('chirps/{chirp}/comments', [CommentController::class, 'store'])->name('chirps.comments.store');
-Route::delete('/comments/{comment}', [CommentController::class, 'destroy'])->name('comments.destroy');
-//End of Routes for Creating, Storing, and Destroying Comments
+//Logically separated, but create groups to reuse /chirps
+
+Route::group(['middleware' => ['auth']], function(){
+
+    //Route for Displaying All Chirpers
+    Route::get('users/', [UserController::class, 'index'])->name('user.index'); 
+    //End of Route for Displaying All Chirpers
+
+    //Route for Displaying a Chirper's Profile
+    Route::get('/user/{id}', [UserController::class, 'show'])->name('user.show');
+    //End of Route for Displaying a Chirper's Profile
+
+    //Routes for Creating, Storing, and Destroying Comments
+    Route::get('chirps/{chirp}/comments/create', [CommentController::class, 'create'])->name('chirps.comments.create');
+    Route::post('chirps/{chirp}/comments', [CommentController::class, 'store'])->name('chirps.comments.store');
+    Route::delete('/comments/{comment}', [CommentController::class, 'destroy'])->name('comments.destroy');
+    //End of Routes for Creating, Storing, and Destroying Comments
+});
 
 require __DIR__.'/auth.php';

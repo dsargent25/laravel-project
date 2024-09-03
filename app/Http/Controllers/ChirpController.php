@@ -55,9 +55,6 @@ class ChirpController extends Controller
 
 	$request->user()->chirps()->create($validated);
 
-    $userid = Auth::user()->id;
-    $users = User::find($userid);
-
 	return redirect(route('chirps.index'));
     }
 
@@ -107,8 +104,6 @@ class ChirpController extends Controller
 
         $chirp->delete();
 
-        $userid = Auth::user()->id;
-        
         return redirect(route('chirps.index'));
     }
 

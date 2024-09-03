@@ -19,7 +19,7 @@ class ChirpPolicy
     /**
      * Determine whether the user can view the model.
      */
-    public function view(): bool
+    public function view(User $user, Chirp $chirp): bool
     {
         //
     }
@@ -27,7 +27,7 @@ class ChirpPolicy
     /**
      * Determine whether the user can create models.
      */
-    public function create(): bool
+    public function create(User $user): bool
     {
         //
     }
@@ -48,19 +48,4 @@ class ChirpPolicy
         return $this->update($user, $chirp);
     }
 
-    /**
-     * Determine whether the user can restore the model.
-     */
-    public function restore(): bool
-    {
-        //
-    }
-
-    /**
-     * Determine whether the user can permanently delete the model.
-     */
-    public function forceDelete(): bool
-    {
-        //
-    }
 }
