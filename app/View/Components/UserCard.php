@@ -4,24 +4,40 @@ namespace App\View\Components;
 
 use Closure;
 use App\Models\User;
-use Illuminate\Contracts\View\View;
+use App\Models\Chirp;
 use Illuminate\View\Component;
+use Illuminate\Contracts\View\View;
 
 class UserCard extends Component
 {
-    public $birthday;
-    public $firstChirp;
+    /**
+     * $firstChirpDate
+     *
+     * Date of the users first chirp || null if user has no chirps
+     */
+    public $firstChirpDate;
+
     /**
      * Create a new component instance.
      */
     public function __construct(public User $user)
     {
+        // assign user's first chirp
+        $firstChirp = $user->chirps->first();
 
-        $this->firstChirp = $this->setFirstChirped($user->chirps->first());
+        $this->firstChirpDate = $this->setFirstChirpDate($firstChirp);
 
     }
 
-    public function setFirstChirped($firstChirp)
+    /**
+     * setFirstChirpDate
+     *
+     * Format the User's first chirp created at date into Jan 2, 1990 format
+     *
+     * @param $firstChirp
+     * @return string Datetime || null
+     */
+    public function setFirstChirpDate($firstChirp)
     {
         if ($firstChirp !== null ){
             $firstChirp = $firstChirp->created_at;

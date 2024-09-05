@@ -1,13 +1,14 @@
 <x-app-layout>
 {{-- View for All Chirpers --}}
-<div class="mt-6 shadow-sm rounded-lg" style="display:flex; justify-content:center;">
+<div class="mt-6" style="display:flex; position:relative;">
 
-                <div class="p-6 flex space-x-2">
-                    <div class="flex-1" >
+                <div class="p-6 flex" style="max-width:1000px;flex-direction:column;flex-wrap:wrap;margin-left:auto;margin-right:auto;justify-content:center;">
+
                     @foreach ($users as $user)
                         <x-user-card :user="$user"/>
                     @endforeach
-                    </div>
+
+
                 </div>
         </div>
 {{-- End of View for All Chirpers --}}
