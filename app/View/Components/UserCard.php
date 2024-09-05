@@ -10,18 +10,26 @@ use Illuminate\View\Component;
 class UserCard extends Component
 {
     public $birthday;
+    public $firstChirp;
     /**
      * Create a new component instance.
      */
     public function __construct(public User $user)
     {
-        $this->birthday = $this->setBirthday($user->created_at);
+
+        $this->firstChirp = $this->setFirstChirped($user->chirps->first());
+
     }
 
-    public function setBirthday($createdAt)
+    public function setFirstChirped($firstChirp)
     {
-        $properDate =  date("l, F d, Y", strtotime($createdAt));  
-        return $properDate;
+        if ($firstChirp !== null ){
+            $firstChirp = $firstChirp->created_at;
+            $firstChirp =  date("l, F d, Y", strtotime($firstChirp));
+            return $firstChirp;
+        } else {
+            return $firstChirp;
+        }
     }
 
 
