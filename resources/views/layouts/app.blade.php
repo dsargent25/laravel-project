@@ -28,7 +28,7 @@
             @endisset
 
             <!-- Page Content -->
-            <main style="display:flex; justify-content:center;">
+            <main style="display:flex;align-self:center;justify-content:center;background-color:aliceblue;width:50%;margin:auto;">
                 {{ $slot }}
             </main>
         </div>
