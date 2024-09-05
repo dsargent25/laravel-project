@@ -21,9 +21,8 @@ class UserController extends Controller
     public function show($name): View
     {
 
-        $user = User::with('chirps')->where('name','=',$name)->first(); 
-        $count = User::withCount('chirps')->where('name','=',$name)->first(); 
-        return view('user.show', ['user' => $user], ['count' => $count]);
+        $user = User::with('chirps')->withCount('chirps')->where('name','=',$name)->first(); 
+        return view('user.show', ['user' => $user]);
 
     }
 
