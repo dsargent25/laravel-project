@@ -1,5 +1,5 @@
 <x-app-layout>
-<div class="mt-6 bg-white shadow-sm rounded-lg divide-y" style="background-color:aliceblue;">
+<div class="mt-6 shadow-sm rounded-lg">
             @foreach ($chirps as $chirp)
                 <div class="p-6 flex space-x-2">
                     <div class="flex-1">
