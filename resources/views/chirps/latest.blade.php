@@ -1,22 +1,7 @@
 <x-app-layout>
-<div class="mt-6 shadow-sm rounded-lg">
-            @foreach ($chirps as $chirp)
-                <div class="p-6 flex space-x-2">
-                    <div class="flex-1">
-                        <div class="flex justify-between items-center">
-                            <div>
-                                <a href="/user/{{ $chirp->user->name }}">
-                                <img width="50" height="50" src=" {{$chirp->user->profile_image_url}}">
-                                </a>
-                                <a href="/user/{{ $chirp->user->name }}">
-                                <span class="text-gray-800">{{ $chirp->user->name }}</span>
-                                </a>
-                                <small class="ml-2 text-sm text-gray-600">{{ $chirp->created_at->format('j M Y, g:i a') }}</small>
-                            </div>
-                        </div>
-                        <p class="mt-4 text-lg text-gray-900">{{ $chirp->message }}</p>
-                    </div>
-                </div>
-            @endforeach
-        </div>
-</x-app-layout>
+    <div class="p-6" style="display:flex; flex-direction:column;width:550px;margin-top:2rem;">
+       @foreach ($chirps as $chirp)
+            <x-small-chirp :chirp="$chirp"/>
+       @endforeach
+    </div>
+ </x-app-layout>

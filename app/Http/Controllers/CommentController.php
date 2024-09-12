@@ -14,8 +14,15 @@ use Illuminate\Http\RedirectResponse;
 class CommentController extends Controller
 {
 
-    public function store(Chirp $chirp)
+    public function store(Request $request, Chirp $chirp): RedirectResponse
     {
+
+        //Functions as comments are not created, but error messages still need to be returned.
+
+        $request->validate([
+            'content' => 'required|string|max:255',
+        ]);
+
         Comment::create([
             'user_id' => Auth::user()->id,
             'chirp_id' => $chirp->id,
