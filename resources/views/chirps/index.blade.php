@@ -2,7 +2,7 @@
 
     <div class="max-w-2xl mx-auto p-4 sm:p-6 lg:p-8">
 
-        <div class="bg-white rounded-lg shadow-lg z-10" style="padding:1rem;position:fixed;bottom:0;right:0;width:350px;" id="chirpbox">
+        <div class="bg-white rounded-lg shadow-sm" style="padding:1rem;">
             <form method="POST" action="{{ route('chirps.store') }}">
                 @csrf
                 <textarea
