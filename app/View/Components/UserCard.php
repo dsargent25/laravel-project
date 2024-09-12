@@ -41,7 +41,7 @@ class UserCard extends Component
     {
         if ($firstChirp !== null ){
             $firstChirp = $firstChirp->created_at;
-            $firstChirp =  date("l, F d, Y", strtotime($firstChirp));
+            $firstChirp =  date("M jS, Y", strtotime($firstChirp));
             return $firstChirp;
         } else {
             return $firstChirp;
