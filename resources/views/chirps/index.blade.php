@@ -1,6 +1,10 @@
 <x-app-layout>
 
-    <div class="max-w-2xl mx-auto p-4 sm:p-6 lg:p-8">
+    <div class="mx-auto p-4 sm:p-6 lg:p-8" >
+
+
+        <div style="max-width: 460px; margin-top:20px;">
+
 
         <div class="bg-white rounded-lg shadow-sm" style="padding:1rem;">
             <form method="POST" action="{{ route('chirps.store') }}">
@@ -20,6 +24,10 @@
             @foreach ($chirps as $chirp)
                 <x-chirp.large-chirp :chirp="$chirp"/>
             @endforeach
+
+
+        </div>
+
 
       </div>
 </x-app-layout>

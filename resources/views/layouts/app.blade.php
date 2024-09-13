@@ -13,6 +13,7 @@
 
         <!-- Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     </head>
     <body class="font-sans antialiased" style="background-color:aliceblue;min-width:485px;">
         <div class="min-h-screen">
@@ -28,7 +29,7 @@
             @endisset
 
             <!-- Page Content -->
-            <main style="display:flex; align-self:center; justify-content:center; background-color:aliceblue; margin:auto;">
+            <main style="display:flex; align-self:center; justify-content:center; background-color:aliceblue; margin:auto;margin-top:50px;max-width:460px;">
                 {{ $slot }}
             </main>
         </div>

@@ -1,4 +1,4 @@
-<div class="mt-6 bg-white shadow rounded-lg" style="padding:1rem;display:flex;flex-direction:column;">
+<div class="mt-6 bg-white shadow rounded-lg" style="padding:1rem;display:flex;flex-direction:column;max-width:460px;">
     <div style="padding:1em;height:100px;">
        <div style="display:flex;">
           <div>
