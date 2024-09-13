@@ -41,7 +41,7 @@
 
 
         <details>
-            <summary class="mt-[10px] mx-[100px] bg-[#26A7DE] text-white rounded-md">Toggle Comments</summary>
+            <summary class="mt-[10px] mx-[100px] bg-[#26A7DE] text-white rounded-md">See Comments</summary>
         <div style="margin-top:10px;padding:5px;">
             <div class="comment-section" style=" padding: 10px 10px;max-height:125px; overflow-y:scroll;}" id="comment-list">
 
