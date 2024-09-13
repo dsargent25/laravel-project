@@ -1,8 +1,8 @@
 <x-app-layout>
 
-    <div class="mx-auto p-4 sm:p-6 lg:p-8" >
-        <div style="margin-top:20px;">
-        <div class="bg-white rounded-lg shadow-sm" style="padding:1rem;">
+    <div class="mx-auto p-4 sm:p-6 lg:p-8 mt-15">
+
+        <div class="bg-white rounded-lg shadow-sm p-4">
             <form method="POST" action="{{ route('chirps.store') }}">
                 @csrf
                 <textarea
@@ -15,13 +15,13 @@
                 <x-input-error :messages="$errors->get('message')" class="mt-2" />
                 <x-primary-button class="mt-4" style="background-color:#26A7DE;">{{ __('Chirp') }}</x-primary-button>
             </form>
-
         </div>
+
             @foreach ($chirps as $chirp)
                 <x-chirp.large-chirp :chirp="$chirp"/>
             @endforeach
-        </div>
 
 
-      </div>
+    </div>
+
 </x-app-layout>

@@ -27,8 +27,8 @@
             @endisset
 
             <!-- Page Content -->
-            <main style="display:flex; align-self:center; justify-content:center; background-color:aliceblue; margin:auto;margin-top:50px;">
-                <div style="max-width:460px;">
+            <main class="flex self-center justify-center bg-[aliceblue] mt-[50px]">
+                <div class="max-w-[460px]">
                     {{ $slot }}
                 </div>
             </main>
