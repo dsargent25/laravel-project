@@ -12,7 +12,7 @@
         <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
 
         <!-- Scripts -->
-        @vite(['resources/css/app.css', 'resources/js/app.js'])
+        @vite(['resources/css/app.scss', 'resources/js/app.js'])
     </head>
 
     <body class="font-sans text-gray-900 antialiased" style="background-color:aliceblue;">
@@ -28,7 +28,7 @@
                         >
                             Log in
                         </a>
-            
+
                             <a
                                 href="{{ route('register') }}"
                                 class="rounded-md px-3 py-2 text-black ring-1 ring-transparent transition hover:text-black/70 focus:outline-none focus-visible:ring-[#FF2D20] text-black dark:hover:text-white/80 dark:focus-visible:ring-white"
@@ -39,7 +39,7 @@
                 </nav>
             </div>
         </header>
-        
+
         <div class=" flex flex-col sm:justify-center items-center pt-6 sm:pt-0 bg-gray-100" style="background-color:aliceblue;">
             <div>
                 <a href="/">
