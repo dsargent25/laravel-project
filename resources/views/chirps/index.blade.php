@@ -1,8 +1,8 @@
 <x-app-layout>
 
-    <div class="max-w-2xl mx-auto p-4 sm:p-6 lg:p-8">
+    <div class="mx-auto p-4 sm:p-6 lg:p-8 mt-15">
 
-        <div class="bg-white rounded-lg shadow-sm" style="padding:1rem;">
+        <div class="bg-white rounded-lg shadow-sm p-4">
             <form method="POST" action="{{ route('chirps.store') }}">
                 @csrf
                 <textarea
@@ -21,5 +21,7 @@
                 <x-chirp.large-chirp :chirp="$chirp"/>
             @endforeach
 
-      </div>
+
+    </div>
+
 </x-app-layout>

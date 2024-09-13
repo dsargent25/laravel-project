@@ -10,7 +10,6 @@
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.bunny.net">
         <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
-
         <!-- Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
     </head>
@@ -28,8 +27,10 @@
             @endisset
 
             <!-- Page Content -->
-            <main style="display:flex; align-self:center; justify-content:center; background-color:aliceblue; margin:auto;">
-                {{ $slot }}
+            <main class="flex self-center justify-center bg-[aliceblue] mt-[50px]">
+                <div class="max-w-[460px]">
+                    {{ $slot }}
+                </div>
             </main>
         </div>
     </body>
