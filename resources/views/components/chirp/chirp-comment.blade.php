@@ -1,5 +1,5 @@
 <div>
-    <p class="leading-3 text-sm text-gray-600">{{ $comment->user->name }} chirps: {{ $comment->content }}</p>
+    <p class="leading-5 text-sm text-gray-600">{{ $comment->user->name }} chirps: {{ $comment->content }}</p>
 </div>
 @if ($comment->user->is(auth()->user()))
     <form method="POST" action="{{ route('comments.destroy', $comment) }}">
