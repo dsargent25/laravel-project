@@ -2,7 +2,7 @@
 
     <div class="mx-auto p-4 sm:p-6 lg:p-8 mt-15">
 
-        <div class="bg-white rounded-lg shadow-sm p-4">
+        <div class="bg-white rounded-lg shadow-sm p-4 my-5">
             <form method="POST" action="{{ route('chirps.store') }}">
                 @csrf
                 <textarea
@@ -18,7 +18,7 @@
         </div>
 
             @foreach ($chirps as $chirp)
-                <x-chirp.large-chirp :chirp="$chirp"/>
+                <x-chirps.chirp-card :chirp="$chirp"/>
             @endforeach
 
 

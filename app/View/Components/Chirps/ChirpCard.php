@@ -1,31 +1,26 @@
 <?php
 
-namespace App\View\Components\Chirp;
+namespace App\View\Components\Chirps;
 
-use App\Models\Chirp;
 use Closure;
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
 
-class LargeChirp extends Component
+class ChirpCard extends Component
 {
+
     public $chirp;
 
     public $name;
     public $profileImageUrl;
     public $message;
-
     public $chirpCreatedDate;
-    public $chirpUpdatedDate;
-
 
     public function __construct($chirp)
     {
 
         // Chirp
         $this->chirp = $chirp;
-
-        // ----
 
         // Assign User's Name
         $name = $chirp->user->name;
@@ -42,11 +37,6 @@ class LargeChirp extends Component
         // Chirp Created Date
         $chirpCreatedDate = $chirp->created_at->format('M jS, Y');
         $this->chirpCreatedDate = $chirpCreatedDate;
-
-        // Chirp Updated Date
-        $chirpUpdatedDate = $chirp->updated_at->format('M jS, Y');
-        $this->chirpUpdatedDate = $chirpUpdatedDate;
-
     }
 
     /**
@@ -54,6 +44,6 @@ class LargeChirp extends Component
      */
     public function render(): View|Closure|string
     {
-        return view('components.chirp.large-chirp');
+        return view('components.chirps.chirp-card');
     }
 }
