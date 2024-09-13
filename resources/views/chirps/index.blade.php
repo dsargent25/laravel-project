@@ -18,7 +18,7 @@
         </div>
 
             @foreach ($chirps as $chirp)
-                <x-large-chirp :chirp="$chirp"/>
+                <x-chirp.large-chirp :chirp="$chirp"/>
             @endforeach
 
       </div>

@@ -6,7 +6,7 @@
         </div>
 
             @foreach ($user->chirps as $chirp)
-                <x-small-chirp :chirp="$chirp"/>
+                <x-chirp.small-chirp :chirp="$chirp"/>
             @endforeach
     </div>
 {{-- End of View for Chirper User Profile --}}

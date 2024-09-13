@@ -3,8 +3,6 @@
 namespace App\View\Components;
 
 use Closure;
-use App\Models\User;
-use App\Models\Chirp;
 use Illuminate\View\Component;
 use Illuminate\Contracts\View\View;
 
@@ -15,16 +13,29 @@ class UserCard extends Component
      *
      * Date of the users first chirp || null if user has no chirps
      */
+    public $name;
+    public $profileImageUrl;
+    public $userChirpsCount;
     public $firstChirpDate;
-
     /**
      * Create a new component instance.
      */
-    public function __construct(public User $user)
+    public function __construct($user)
     {
-        // assign user's first chirp
-        $firstChirp = $user->chirps->first();
+        // Assign User's Name
+        $name = $user->name;
+        $this->name = $name;
 
+        // Assign Profile Image URL
+        $profileImageUrl = $user->profile_image_url;
+        $this->profileImageUrl = $profileImageUrl;
+
+        // Assign Chirps Count
+        $userChirpsCount = $user->chirps_count;
+        $this->userChirpsCount = $userChirpsCount;
+
+        // Assign First Chirp Date or Null (Set Via setFirstChirpDate)
+        $firstChirp = $user->chirps->first();
         $this->firstChirpDate = $this->setFirstChirpDate($firstChirp);
 
     }

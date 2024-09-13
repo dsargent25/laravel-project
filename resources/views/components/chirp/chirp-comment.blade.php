@@ -1,5 +1,3 @@
-@props(['comment'])
-
 <div>
     <p class="leading-3 text-sm text-gray-600">{{ $comment->user->name }} chirps: {{ $comment->content }}</p>
 </div>

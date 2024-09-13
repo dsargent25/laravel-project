@@ -1,17 +1,15 @@
-@props(['chirp'])
-
 <div class="mt-6 bg-white shadow rounded-lg" style="padding:1rem;display:flex;flex-direction:column;">
     <div style="padding:1em;height:100px;">
        <div style="display:flex;">
           <div>
-             <a href="/user/{{ $chirp->user->name }}">
-             <img width="75" height="75" src=" {{$chirp->user->profile_image_url}}">
+             <a href="/user/{{ $name }}">
+             <img width="75" height="75" src=" {{ $profileImageUrl }}">
              </a>
           </div>
           <div style="margin-left:1rem;">
-             <a href="/user/{{ $chirp->user->name }}">
+             <a href="/user/{{ $name }}">
                 <span class="text-gray-800" >
-                   <p style="font-size:1.25rem">{{ $chirp->user->name }}</p>
+                   <p style="font-size:1.25rem">{{ $name }}</p>
                 </span >
              </a>
           </div>
@@ -24,11 +22,11 @@
        <div class="p-6 flex space-x-2" style="width:300px">
           <div class="flex-1 flex-row" style="position:relative;">
              <div class="flex-initial">
-                <p class="text-m text-gray-900">" {{ $chirp->message }} "</p>
+                <p class="text-m text-gray-900">" {{ $message }} "</p>
              </div>
              <div style="padding-top:10px">
-                <small class="text-sm text-gray-600">{{ $chirp->created_at->format('j M Y, g:i a') }}</small>
-                @unless ($chirp->created_at->eq($chirp->updated_at))
+                <small class="text-sm text-gray-600">{{ $chirpCreatedDate }}</small>
+                @unless ($chirpCreatedDate == $chirpUpdatedDate)
                 <small class="text-sm text-gray-600"> &middot; {{ __('edited') }}</small>
                 @endunless
                 <div>
@@ -68,7 +66,7 @@
           <div class="comment-section" style=" padding: 10px 10px; height:125px; overflow-y:scroll;}" id="comment-list">
 
                 @foreach($chirp->comment as $comment)
-                    <x-chirp-comments :comment="$comment" />
+                    <x-chirp.chirp-comment :comment="$comment" />
                 @endforeach
 
           </div>
