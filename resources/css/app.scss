@@ -4,6 +4,14 @@
 
 // Custom SASS goes here
 
+@media (max-width: 639px) {
+
+    .chirpBox{
+        position:initial;
+    }
+
+  }
+
 details > summary{
     font-size: 13px;
     color: rgb(107, 114, 128);
@@ -13,4 +21,18 @@ details > summary{
 
 .comment-section::-webkit-scrollbar {
     display: none;
+  }
+
+  .chirpToggle{
+    font-size: 1rem;
+    color: white;
+
+    position:fixed;
+    right:0;
+    bottom:0;
+
+    background-color:#26A7DE;
+    border-radius: .5rem;
+    padding: .5rem;
+    margin: .5rem;
   }
