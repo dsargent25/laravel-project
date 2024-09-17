@@ -33,6 +33,8 @@
                                 var commentsList = `#comments-list-${chirpId}`
                                 $(commentsList).append(html);
                             });
+
+                            $('.comment-form')[0].reset();
                         },
                         error: function() {
                             alert('An error occurred. Please try again later.');
