@@ -34,7 +34,8 @@
                                 $(commentsList).append(html);
                             });
 
-                            $('.comment-form')[0].reset();
+                            $(".comment-form").trigger('reset');
+
                         },
                         error: function() {
                             alert('An error occurred. Please try again later.');
