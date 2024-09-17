@@ -12,6 +12,35 @@
         <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
         <!-- Scripts -->
         @vite(['resources/css/app.scss', 'resources/js/app.js'])
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+        <script>
+            $(document).ready(function(){
+                $('.comment-form').on('submit', function(event) {
+                    event.preventDefault();
+
+                    var chirpId = $(this).find("#chirpId").val();
+                    var thisUser = $(this).find("#thisUser").val();
+                    var urlString = `/chirps/${chirpId}/comments`;
+
+                    $.ajax({
+                        url: urlString,
+                        method: 'POST',
+                        dataType: 'json',
+                        data: $(this).serialize(),
+                        success: function(data) {
+                            $.each(data, function(key,value){
+                                var html = '<p class="leading-5 text-sm text-gray-600">' + thisUser + ' chirps: ' + value.content + '</p>'
+                                var commentsList = `#comments-list-${chirpId}`
+                                $(commentsList).append(html);
+                            });
+                        },
+                        error: function() {
+                            alert('An error occurred. Please try again later.');
+                        }
+                    });
+                });
+            });
+        </script>
     </head>
     <body class="font-sans antialiased" style="background-color:aliceblue;min-width:485px;">
         <div class="min-h-screen">
