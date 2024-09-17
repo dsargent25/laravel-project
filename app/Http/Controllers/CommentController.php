@@ -2,36 +2,36 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Comment;
 use App\Models\Chirp;
-use App\Models\User;
-use Illuminate\Support\Facades\Auth;
+use App\Models\Comment;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Response;
 
 
 class CommentController extends Controller
 {
 
-    public function store(Request $request, Chirp $chirp): RedirectResponse
+    public function store(Request $request, Chirp $chirp)
     {
-
-        //Functions as comments are not created, but error messages still need to be returned.
 
         $request->validate([
             'content' => 'required|string|max:255',
         ]);
 
-        Comment::create([
+        $comment = Comment::create([
             'user_id' => Auth::user()->id,
             'chirp_id' => $chirp->id,
             'content' => request()->get('content')
         ]);
 
-        return redirect(route('chirps.index'));
-    }
+        return Response::json([
+            'comment' => $comment
+        ], 200);
 
+    }
 
     public function update()
     {

@@ -43,23 +43,24 @@
         <details>
             <summary class="mt-[10px] mx-[100px] bg-[#26A7DE] text-white rounded-md">See Comments</summary>
         <div style="margin-top:10px;padding:5px;">
-            <div class="comment-section" style=" padding: 10px 10px;max-height:125px; overflow-y:scroll;}" id="comment-list">
+            <div style=" padding: 10px 10px; max-height:125px; overflow-y:scroll;}">
+                <div id="comments-list-{{$chirp->id}}">
+                  @foreach($chirp->comment as $comment)
 
-                  @forelse($chirp->comment as $comment)
-                      <x-chirp.chirp-comment :comment="$comment" />
-                  @empty
-                    <p class="text-gray-600 text-sm">No Comments. Be the first?</p>
-                  @endforelse
+                      <x-chirp.chirp-comment :comment="$comment"/>
 
-
+                  @endforeach
+                </div>
             </div>
             <div class="mt-4">
                <form action="{{ route("chirps.comments.store", $chirp->id)}}" method="POST"
-               class="block w-full border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md" id='save-comment'>
+               class="block w-full border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md comment-form">
                @csrf
                <div style="display:flex;gap:10px;height:40px;">
-                    <input name="content" class="border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm text-[12px] w-[225px]" type="text" required>
-                    <x-primary-button type="submit" class="comment-update" style="background-color:#26A7DE;font-size:11px;">{{ __('Comment') }}</x-primary-button>
+                    <input type="hidden" id="thisUser" name="thisUser" value="{{Auth::user()->name}}">
+                    <input type="hidden" id="chirpId" name="chirpId" value="{{$chirp->id}}">
+                    <input name="content" class="border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm text-[12px] w-[225px]" type="text" id="comment">
+                    <x-primary-button type="submit" id="save-comment" style="background-color:#26A7DE;font-size:11px;">{{ __('Comment') }}</x-primary-button>
                 </div>
                <x-input-error :messages="$errors->get('message')" class="mt-2" />
                </form>
