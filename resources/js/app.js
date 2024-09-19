@@ -7,10 +7,10 @@ window.Alpine = Alpine;
 Alpine.start();
 
 function addDeleteClickHandler(form){
-    form.querySelector('.comment-delete-form').addEventListener('submit', deleteComments());
+    form.querySelector('.comment-delete-form').addEventListener('submit', initializeDeleteCommentButtons());
 }
 
-function updateComments(){
+function initializeCommentForms(){
 
     let commentForms = document.querySelectorAll(".comment-form");
 
@@ -20,13 +20,13 @@ function updateComments(){
             event.preventDefault();
 
             const formData = new FormData(form);
-            let urlString = `/chirps/${form.querySelector('#chirpId').value}/comments`;
             let chirpId = `${form.querySelector('#chirpId').value}`;
             let thisUser = `${form.querySelector('#thisUser').value}`;
-            var csrf = document.querySelector('meta[name="csrf-token"]').content;
+            let csrf = document.querySelector('meta[name="csrf-token"]').content;
+            let baseUrl = window.location.origin;
 
             try {
-                const response = await fetch(urlString, {
+                const response = await fetch(form.action, {
                     method: "POST",
                     body: formData,
                     headers: {
@@ -35,6 +35,7 @@ function updateComments(){
                 });
 
                 const result = await response.json();
+                let constructedAction = `${baseUrl}/comments/${result.comment.id}`;
 
                 let html =
 
@@ -44,7 +45,7 @@ function updateComments(){
                             <p class="leading-5 text-sm text-gray-600"> ${thisUser} chirps: ${result.comment.content} </p>
                         </div>
 
-                        <form class="comment-delete-form">
+                        <form class="comment-delete-form" method="POST" action="${constructedAction}">
                             <input type="hidden" name="_token" value="${csrf}" autocomplete="off">
                             <input type="hidden" name="_method" value="delete">
                             <input type="hidden" id="commentId" name="commentId" value="${result.comment.id}">
@@ -75,7 +76,7 @@ function updateComments(){
 
 }
 
-function deleteComments(){
+function initializeDeleteCommentButtons(){
 
     let commentDeleteForms = document.querySelectorAll(".comment-delete-form");
 
@@ -85,14 +86,13 @@ function deleteComments(){
             event.preventDefault();
 
             let commentId = `${form.querySelector('#commentId').value}`;
-            let urlStringDelete = `/comments/${commentId}`;
             let commentInstanceId = `comment-${commentId}`;
             let commentInstance = document.getElementById(commentInstanceId);
             var csrf = document.querySelector('meta[name="csrf-token"]').content;
 
             try {
 
-                const response = await fetch(urlStringDelete, {
+                const response = await fetch(form.action, {
                     method: "DELETE",
                     headers: {
                         'X-CSRF-Token': csrf,
@@ -114,6 +114,6 @@ function deleteComments(){
 }
 
 document.addEventListener("DOMContentLoaded", (event) => {
-    updateComments();
-    deleteComments();
+    initializeCommentForms();
+    initializeDeleteCommentButtons();
 });
