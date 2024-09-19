@@ -32,18 +32,24 @@ Route::group(['middleware' => ['auth']], function(){
 Route::group(['middleware' => ['auth']], function(){
 
     //Route for Displaying All Chirpers
-    Route::get('users/', [UserController::class, 'index'])->name('user.index'); 
+    Route::get('users/', [UserController::class, 'index'])->name('user.index');
     //End of Route for Displaying All Chirpers
 
     //Route for Displaying a Chirper's Profile
     Route::get('/user/{id}', [UserController::class, 'show'])->name('user.show');
     //End of Route for Displaying a Chirper's Profile
 
+    //Routes for Following/Unfollowing
+    Route::post('user/{user}/follow', [UserController::class,'follow'])->name('user.follow');
+    Route::post('user/{user}/unfollow', [UserController::class,'unfollow'])->name('user.unfollow');
+    //End of Routes for Following/Unfollowing
+
     //Routes for Creating, Storing, and Destroying Comments
     Route::get('chirps/{chirp}/comments/create', [CommentController::class, 'create'])->name('chirps.comments.create');
     Route::post('chirps/{chirp}/comments', [CommentController::class, 'store'])->name('chirps.comments.store');
     Route::delete('/comments/{comment}', [CommentController::class, 'destroy'])->name('comments.destroy');
     //End of Routes for Creating, Storing, and Destroying Comments
+
 });
 
 require __DIR__.'/auth.php';

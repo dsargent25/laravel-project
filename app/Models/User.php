@@ -56,4 +56,14 @@ class User extends Authenticatable
      return $this->hasMany(Comment::class, Chirp::class);
     }
 
+    // The individuals we are following. Many to Many.
+    public function follows(){
+     return $this->belongsToMany(User::class,'follower_user', 'follower_id', 'user_id')->withTimestamps();
+    }
+
+    // The individiuals who are following 'us'. Many to Many.
+    public function followers(){
+     return $this->belongsToMany(User::class,'follower_user', 'user_id', 'follower_id')->withTimestamps();
+    }
+
 }
