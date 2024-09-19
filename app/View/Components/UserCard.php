@@ -13,6 +13,8 @@ class UserCard extends Component
      *
      * Date of the users first chirp || null if user has no chirps
      */
+
+    public $user;
     public $name;
     public $profileImageUrl;
     public $userChirpsCount;
@@ -37,6 +39,9 @@ class UserCard extends Component
         // Assign First Chirp Date or Null (Set Via setFirstChirpDate)
         $firstChirp = $user->chirps->first();
         $this->firstChirpDate = $this->setFirstChirpDate($firstChirp);
+
+        // Assign User
+        $this->user = $user;
 
     }
 
