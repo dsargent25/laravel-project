@@ -39,12 +39,10 @@ class CommentController extends Controller
     }
 
 
-    public function destroy(Comment $comment): RedirectResponse
+    public function destroy(Comment $comment)
     {
         Gate::authorize('delete', $comment);
-
         $comment->delete();
-
-        return redirect(route('chirps.index'));
+        return Response::json(['Comment deleted!'], 200);
     }
 }
