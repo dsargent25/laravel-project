@@ -15,6 +15,7 @@ class UserCard extends Component
      */
 
     public $user;
+    public $id;
     public $name;
     public $profileImageUrl;
     public $userChirpsCount;
@@ -27,6 +28,10 @@ class UserCard extends Component
         // Assign User's Name
         $name = $user->name;
         $this->name = $name;
+
+        // Assign User's ID
+        $id = $user->id;
+        $this->id = $id;
 
         // Assign Profile Image URL
         $profileImageUrl = $user->profile_image_url;
