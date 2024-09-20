@@ -6,7 +6,7 @@
             @csrf
             <input type="hidden" id="userToFollow" name="userToFollow" value="{{$name}}">
             <input type="hidden" id="userFollowing" name="userFollowing" value="{{Auth::user()->name}}">
-            <button type="submit" style="color:white;background-color:rgb(197, 71, 71);border-radius:.25rem;padding:.25rem;margin-left:.1rem;margin-right:.1rem;">Unfollow</button>
+            <button type="submit" class="follow-unfollow-button unfollow-button">Unfollow</button>
         </form>
 
     @elseif(Auth::user()->id == $user->id)
@@ -17,7 +17,7 @@
             @csrf
             <input type="hidden" id="userToFollow" name="userToFollow" value="{{$name}}">
             <input type="hidden" id="userFollowing" name="userFollowing" value="{{Auth::user()->name}}">
-            <button type="submit" style="color:white;background-color:rgb(113, 209, 113);border-radius:.25rem;padding:.25rem;margin-left:.1rem;margin-right:.1rem;">Follow</button>
+            <button type="submit" class="follow-unfollow-button follow-button">Follow</button>
         </form>
 
     @endif
