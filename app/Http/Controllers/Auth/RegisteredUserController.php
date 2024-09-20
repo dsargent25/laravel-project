@@ -29,18 +29,25 @@ class RegisteredUserController extends Controller
      */
     public function store(Request $request): RedirectResponse
     {
+
         $request->validate([
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
-            'profile_image_url' => ['string','url', 'max:255', 'nullable']
+            'profile_image' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif', 'max:2048'],
         ]);
+
+        if($request->profile_image === null){
+            $profileImage = '';
+        } else {
+            $profileImage = $request->file('profile_image')->store('profile-images', 'public');
+        }
 
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
-            'profile_image_url' => $request->profile_image_url ?? 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png'
+            'profile_image' => $profileImage
         ]);
 
         event(new Registered($user));
