@@ -1,12 +1,11 @@
 <x-app-layout>
     <x-chirps.chirp-box/>
     <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                <div class="p-6 text-gray-900">
-                    {{ __("You've been logged in!") }}
-                </div>
-            </div>
+        <div>
+                <h1 class="chirp-feed-title">Your Chirp Flock:</h1>
+                @foreach ($chirps as $chirp)
+                    <x-chirps.chirp-card :chirp="$chirp"/>
+                @endforeach
         </div>
     </div>
 </x-app-layout>

@@ -1,13 +1,15 @@
 <div class="px-6 pt-6 pb-3 flex space-x-2 bg-white rounded-lg shadow-lg" style="width:400px;margin:auto; margin-bottom:1rem;">
     <div class="flex-1">
         <div class="flex" style="flex-direction: row;">
-                <div style="width:100px;margin:10px;">
+                <a href="/user/{{ $name }}">
+                    <div style="width:100px;margin:10px;">
 
-                    <div class="rounded-lg" style="width:60px;height:60px;background-image:url('{{$profileImageUrl}}');background-position:center;background-size:cover;">
+                        <div class="rounded-lg" style="width:60px;height:60px;background-image:url('{{$profileImageUrl}}');background-position:center;background-size:cover;">
+                        </div>
+
+                        <span class="text-gray-800">{{ $name }}</span>
                     </div>
-
-                    <span class="text-gray-800">{{ $name }}</span>
-                </div>
+                </a>
                 <div style="align-items:left;width:200px;">
                     <p class="mt-4 text-m text-gray-600">" {{ $message }} "</p>
                     <small class="text-sm text-gray-500">{{ $chirpCreatedDate }}</small>
