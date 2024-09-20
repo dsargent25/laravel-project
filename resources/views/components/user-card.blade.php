@@ -1,7 +1,7 @@
 <div class="p-6 flex space-x-2 shadow-md rounded-lg" style="background-color:white;margin:1rem;width:400px;">
     <div class="flex-1" style="width:300px;outline:2px dashed #26A7DE;border-radius:.3rem;padding:2rem;">
 
-        <a href="/user/{{ $name }}">
+        <a href="/user/{{ $id }}">
         <div class="flex p-1">
             <div>
 

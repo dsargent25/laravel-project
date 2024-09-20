@@ -1,7 +1,7 @@
 <div class="px-6 pt-6 pb-3 flex space-x-2 bg-white rounded-lg shadow-lg" style="width:400px;margin:auto; margin-bottom:1rem;">
     <div class="flex-1">
         <div class="flex" style="flex-direction: row;">
-                <a href="/user/{{ $name }}">
+                <a href="/user/{{ $id }}">
                     <div style="width:100px;margin:10px;">
 
                         <div class="rounded-lg" style="width:60px;height:60px;background-image:url('{{$profileImageUrl}}');background-position:center;background-size:cover;">

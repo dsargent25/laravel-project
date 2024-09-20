@@ -10,8 +10,8 @@ class ChirpCard extends Component
 {
 
     public $chirp;
-
     public $name;
+    public $id;
     public $profileImageUrl;
     public $message;
     public $chirpCreatedDate;
@@ -25,6 +25,10 @@ class ChirpCard extends Component
         // Assign User's Name
         $name = $chirp->user->name;
         $this->name = $name;
+
+        // Assign User's ID
+        $id = $chirp->user->id;
+        $this->id = $id;
 
         // Assign Profile Image URL
         $profileImageUrl = $chirp->user->profile_image_url;
