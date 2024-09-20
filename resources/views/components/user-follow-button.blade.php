@@ -1,13 +1,15 @@
 <div style="display:flex;justify-content:end;margin-top:1rem;">
 
-    @if(Auth::user()->isFollowing($user))
+    @if(Auth::user()->follows()->where('user_id', $user->id)->exists())
 
-    <form action="{{ route("user.unfollow", $id)}}" method="POST">
-        @csrf
-        <input type="hidden" id="userToFollow" name="userToFollow" value="{{$name}}">
-        <input type="hidden" id="userFollowing" name="userFollowing" value="{{Auth::user()->name}}">
-        <button type="submit" style="color:white;background-color:rgb(197, 71, 71);border-radius:.25rem;padding:.25rem;margin-left:.1rem;margin-right:.1rem;">Unfollow</button>
-    </form>
+        <form action="{{ route("user.unfollow", $id)}}" method="POST">
+            @csrf
+            <input type="hidden" id="userToFollow" name="userToFollow" value="{{$name}}">
+            <input type="hidden" id="userFollowing" name="userFollowing" value="{{Auth::user()->name}}">
+            <button type="submit" style="color:white;background-color:rgb(197, 71, 71);border-radius:.25rem;padding:.25rem;margin-left:.1rem;margin-right:.1rem;">Unfollow</button>
+        </form>
+
+    @elseif(Auth::user()->id == $user->id)
 
     @else
 
