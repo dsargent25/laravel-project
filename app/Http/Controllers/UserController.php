@@ -3,8 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
-use App\Models\Chirp;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
 
 class UserController extends Controller
@@ -26,14 +27,19 @@ class UserController extends Controller
 
     }
 
-    public function follow(Request $request)
+    public function follow(User $user, Request $request)
     {
+        $follower = Auth::user();
+        $follower->follows()->attach($user);
+        return back();
 
     }
 
-    public function unfollow(Request $request)
+    public function unfollow(User $user, Request $request)
     {
-
+        $follower = Auth::user();
+        $follower->follows()->detach($user);
+        return back();
     }
 
 }

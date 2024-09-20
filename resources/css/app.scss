@@ -20,6 +20,7 @@ details > summary{
     color: white;
 
     position:fixed;
+    z-index: 99;
     right:0;
     bottom:0;
 
@@ -36,4 +37,20 @@ details > summary{
 
   .responsive-settings-options-wrapper{
     margin-left: 20px;
+  }
+
+  .follow-unfollow-button{
+    color:white;
+    border-radius:.25rem;
+    padding:.25rem;
+    margin-left:.1rem;
+    margin-right:.1rem;
+  }
+
+  .unfollow-button{
+    background-color:rgb(197, 71, 71);
+  }
+
+  .follow-button{
+    background-color:rgb(113, 209, 113)
   }

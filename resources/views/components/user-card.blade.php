@@ -24,5 +24,8 @@
 
         </div>
         </a>
+
+        <x-user-follow-button :user="$user"/>
+
     </div>
 </div>
