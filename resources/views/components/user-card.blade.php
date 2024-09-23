@@ -4,15 +4,13 @@
         <a href="/user/{{ $id }}">
         <div class="flex p-1">
             <div>
-
-                    @empty($user->profile_image)
-                        <div class="rounded-lg" style="width:100px;height:100px;background-image:url('https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png');background-position:center;background-size:cover;">
-                        </div>
-                    @else
-                        <div class="rounded-lg" style="width:100px;height:100px;background-image:url('{{asset('storage/'.$user->profile_image)}}');background-position:center;background-size:cover;">
-                        </div>
-                    @endif
-
+                @empty($user->profile_image)
+                    <div class="rounded-lg" style="width:100px;height:100px;background-image:url('{{asset('storage/profile-images/default_profile.jpg')}}');background-position:center;background-size:cover;">
+                    </div>
+                @else
+                    <div class="rounded-lg" style="width:100px;height:100px;background-image:url('{{asset('storage/'.$user->profile_image)}}');background-position:center;background-size:cover;">
+                    </div>
+                @endif
             </div>
             <div style="padding-left:1rem;width:250px;">
                 <p class="text-l">{{ $name }}</p>

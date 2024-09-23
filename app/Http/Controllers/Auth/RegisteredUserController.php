@@ -37,7 +37,7 @@ class RegisteredUserController extends Controller
             'profile_image' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif', 'max:2048'],
         ]);
 
-        if($request->profile_image === null){
+        if(!$request->profile_image){
             $profileImage = '';
         } else {
             $profileImage = $request->file('profile_image')->store('profile-images', 'public');
