@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('images', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained()->cascadeOnDelete();
-            $table->string('file_path')->nullable();
+            $table->string('filename')->nullable();
             $table->string('image_role')->nullable();
             $table->timestamps();
         });
