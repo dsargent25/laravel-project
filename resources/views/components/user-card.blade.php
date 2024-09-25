@@ -5,8 +5,14 @@
         <div class="flex p-1">
             <div>
 
-                    <div class="rounded-lg" style="width:100px;height:100px;background-image:url('{{$profileImageUrl}}');background-position:center;background-size:cover;">
-                    </div>
+                @empty($user->images->first()->filename)
+                <div class="rounded-lg" style="width:60px;height:60px;background-image:url('{{asset('storage/profile-images/default_profile.jpg')}}');background-position:center;background-size:cover;">
+                </div>
+                @else
+                <div class="rounded-lg" style="width:60px;height:60px;background-image:url('{{asset('storage/'.$user->images->first()->filename)}}');background-position:center;background-size:cover;">
+                </div>
+                @endif
+
 
             </div>
             <div style="padding-left:1rem;width:250px;">

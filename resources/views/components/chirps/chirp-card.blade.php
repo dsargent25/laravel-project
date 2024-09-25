@@ -4,8 +4,13 @@
                 <a href="/user/{{ $id }}">
                     <div style="width:100px;margin:10px;">
 
-                        <div class="rounded-lg" style="width:60px;height:60px;background-image:url('{{$profileImageUrl}}');background-position:center;background-size:cover;">
+                        @empty($chirp->user->images->first()->filename)
+                        <div class="rounded-lg" style="width:60px;height:60px;background-image:url('{{asset('storage/profile-images/default_profile.jpg')}}');background-position:center;background-size:cover;">
                         </div>
+                        @else
+                        <div class="rounded-lg" style="width:60px;height:60px;background-image:url('{{asset('storage/'.$chirp->user->images->first()->filename)}}');background-position:center;background-size:cover;">
+                        </div>
+                        @endif
 
                         <span class="text-gray-800">{{ $name }}</span>
                     </div>
