@@ -4,6 +4,7 @@ namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
 use App\Service\ImageService;
+use App\Models\User;
 
 class CopyProfileImageUrls extends Command
 {
@@ -44,7 +45,19 @@ class CopyProfileImageUrls extends Command
     {
         $this->info('Copying profile image URLs...');
 
-        $this->imageService->copyAllUserProfileImageUrls();
+        $profileImageUrlWithIds = User::all()->map->only('id', 'profile_image_url')->toArray();
+
+        foreach ($profileImageUrlWithIds as $profileImageUrlWithId) {
+
+            $url = $profileImageUrlWithId['profile_image_url'];
+            $user_id = $profileImageUrlWithId['id'];
+
+            if ($url){
+
+                $this->imageService->downloadImageFromUrl($url, $user_id);
+            }
+
+        }
 
         $this->info('All profile image urls on Users table are now downloaded, with entries added to the Images table.');
     }
