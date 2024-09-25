@@ -13,6 +13,7 @@ class Image extends Model
     protected $fillable = [
         'filename',
         'image_role',
+        'user_id',
     ];
 
     public function user(): BelongsTo
