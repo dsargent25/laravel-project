@@ -8,44 +8,43 @@ use Illuminate\Support\Facades\Storage;
 class ImageService
 {
 
-    public function downloadImageFromUrl($url, $user_id){
+    public function downloadImageFromUrl($url, $filename, $folder){
+
+        $success = false;
 
         $imageContent = file_get_contents($url);
+
+        $extension = pathinfo($url, PATHINFO_EXTENSION);
+
         if($imageContent === false)
-            {
-                throw new \Exception("Could not access image from URL.");
+        {
+            throw new \Exception("Could not access image from URL.");
+        }
 
-            }
+        if(!Storage::disk('public')->exists($folder)) {
+            Storage::disk('public')->makeDirectory($folder, 0775, true);
+        }
 
-        $basename = pathinfo($url)['basename'];
+        $path = $folder . '/' . $filename . '.' . $extension;
 
         try{
-            Storage::disk('public')->put($basename, $imageContent);
+            $success = Storage::disk('public')->put($path, $imageContent);
         } catch(\Throwable $e) {
             \Log::info('Image failed to download.');
         }
 
-        $this->createUserImage($basename, $user_id);
-
+        if($success) {
+            return $path;
+        } else {
+            return false;
+        }
     }
 
-    public function createUserImage($basename, $user_id){
-
-        $userDirectory = storage_path("app/public/user-{$user_id}");
-        if (!file_exists($userDirectory)) {
-            mkdir($userDirectory, 0755, true);
-        }
-
-        $newFilepath = storage_path("app/public/user-{$user_id}/{$basename}");
-        $oldFilepath = storage_path("app/public/{$basename}");
-        $symbolicFilepath = "user-{$user_id}/{$basename}";
-
-        rename($oldFilepath,$newFilepath);
-
+    public function addUserImageRecord($user_id, $path){
         Image::updateOrCreate(
             ['user_id' => $user_id],
             [
-                'filename' => $symbolicFilepath,
+                'filename' => $path,
                 'image_role' => 'profile'
             ]
         );

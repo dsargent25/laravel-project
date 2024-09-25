@@ -54,7 +54,12 @@ class CopyProfileImageUrls extends Command
 
             if ($url){
 
-                $this->imageService->downloadImageFromUrl($url, $user_id);
+                $filename = pathinfo($url, PATHINFO_FILENAME);
+                $folder = "user-{$user_id}";
+                $path = $this->imageService->downloadImageFromUrl($url, $filename, $folder);
+
+                $this->imageService->addUserImageRecord($user_id, $path);
+
             }
 
         }
