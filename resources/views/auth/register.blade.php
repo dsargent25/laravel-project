@@ -56,5 +56,8 @@
                 {{ __('Register') }}
             </x-primary-button>
         </div>
+
+        <x-input-error :messages="$errors->get('generic')" class="mt-2" />
+
     </form>
 </x-guest-layout>

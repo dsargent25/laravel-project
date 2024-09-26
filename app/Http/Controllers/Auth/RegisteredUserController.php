@@ -78,7 +78,7 @@ class RegisteredUserController extends Controller
             } catch(Exception $e) {
 
                 \Log::info($e->getMessage());
-                return redirect()->back()->withErrors(['profile_image' => $e->getMessage()]);
+                return redirect()->back()->withErrors(['generic' => $e->getMessage()]);
 
             }
 
