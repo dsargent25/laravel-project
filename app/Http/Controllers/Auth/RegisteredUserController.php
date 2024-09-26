@@ -34,49 +34,54 @@ class RegisteredUserController extends Controller
     public function store(Request $request, ImageService $imageService): RedirectResponse
     {
 
-        $request->validate([
-            'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],
-            'password' => ['required', 'confirmed', Rules\Password::defaults()],
-            'profile_image' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif', 'max:2048'],
-        ]);
-
-        $user = User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-        ]);
-
-        event(new Registered($user));
-
-        if($request->profile_image && $request->profile_image->extension()){
-
-            $success = false;
-
-            $extension = $request->profile_image->extension();
-            $filename = "profile-image" . '.' . $extension;
-            $folder = "user-{$user->id}";
-            $path = $folder . '/' . $filename;
-            $fileContents = $request->profile_image->get();
-            $path = $request->file('profile_image')->storeAs($folder, $filename, 'public');
-
             try{
-                $success = Storage::disk('public')->put($path, $fileContents);
-            } catch(\Throwable $e) {
-                \Log::info('Image failed to download.');
-            }
 
-            if($success) {
+                $request->validate([
+                    'name' => ['required', 'string', 'max:255'],
+                    'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],
+                    'password' => ['required', 'confirmed', Rules\Password::defaults()],
+                    'profile_image' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif', 'max:2048'],
+                ]);
+
+                $user = User::create([
+                    'name' => $request->name,
+                    'email' => $request->email,
+                    'password' => Hash::make($request->password),
+                ]);
+
+                event(new Registered($user));
+
+                if($request->profile_image && $request->profile_image->extension()){
+
+                $extension = $request->profile_image->extension();
+                $filename = "profile-image" . '.' . $extension;
+                $folder = "user-{$user->id}";
+                $path = $folder . '/' . $filename;
+                $fileContents = $request->profile_image->get();
+                $path = $request->file('profile_image')->storeAs($folder, $filename, 'public');
+
+
+                if(!Storage::disk('public')->put($path, $fileContents))
+                {
+                    return redirect()->back()->withErrors(['profile_image' => 'Image upload failed.']);
+                }
+
                 $imageService->addUserImageRecord($user->id, $path);
-            } else {
-                return redirect()->back()->withErrors(['profile_image' => 'Image upload failed.']);
+
+                }
+
+                Auth::login($user);
+
+                return redirect(route('dashboard', absolute: false));
+
+            } catch(\Throwable $e) {
+
+                \Log::info('Image failed to download.');
+                return redirect()->back();
+
             }
 
-        }
-
-
-        Auth::login($user);
-
-        return redirect(route('dashboard', absolute: false));
     }
+
+
 }
