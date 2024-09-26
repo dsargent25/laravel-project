@@ -2,15 +2,20 @@
 
 namespace App\Http\Controllers\Auth;
 
-use App\Http\Controllers\Controller;
 use App\Models\User;
-use Illuminate\Auth\Events\Registered;
-use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Validation\Rules;
 use Illuminate\View\View;
+use Illuminate\Http\Request;
+use App\Service\ImageService;
+use Illuminate\Validation\Rules;
+use App\Http\Controllers\Controller;
+use Exception;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Auth\Events\Registered;
+use Illuminate\Support\Facades\Storage;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class RegisteredUserController extends Controller
 {
@@ -27,26 +32,57 @@ class RegisteredUserController extends Controller
      *
      * @throws \Illuminate\Validation\ValidationException
      */
-    public function store(Request $request): RedirectResponse
+    public function store(Request $request, ImageService $imageService): RedirectResponse
     {
-        $request->validate([
-            'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],
-            'password' => ['required', 'confirmed', Rules\Password::defaults()],
-            'profile_image_url' => ['string','url', 'max:255', 'nullable']
-        ]);
 
-        $user = User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-            'profile_image_url' => $request->profile_image_url ?? 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png'
-        ]);
+            try{
 
-        event(new Registered($user));
+                $request->validate([
+                    'name' => ['required', 'string', 'max:255'],
+                    'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],
+                    'password' => ['required', 'confirmed', Rules\Password::defaults()],
+                    'profile_image' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif', 'max:2048'],
+                ]);
 
-        Auth::login($user);
+                $user = User::create([
+                    'name' => $request->name,
+                    'email' => $request->email,
+                    'password' => Hash::make($request->password),
+                ]);
 
-        return redirect(route('dashboard', absolute: false));
+                event(new Registered($user));
+
+                if($request->profile_image && $request->profile_image->extension()){
+
+                $extension = $request->profile_image->extension();
+                $filename = "profile-image" . '.' . $extension;
+                $folder = "user-{$user->id}";
+                $path = $folder . '/' . $filename;
+                $fileContents = $request->profile_image->get();
+                $path = $request->file('profile_image')->storeAs($folder, $filename, 'public');
+
+                if(!Storage::disk('public')->put($path, $fileContents))
+                {
+                    throw new Exception('Image upload failed.');
+
+                }
+
+                $imageService->addUserImageRecord($user->id, $path);
+
+                }
+
+                Auth::login($user);
+
+                return redirect(route('dashboard', absolute: false));
+
+            } catch(Exception $e) {
+
+                \Log::info($e->getMessage());
+                return redirect()->back()->withErrors(['generic' => $e->getMessage()]);
+
+            }
+
     }
+
+
 }

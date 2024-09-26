@@ -17,7 +17,6 @@ class UserCard extends Component
     public $user;
     public $id;
     public $name;
-    public $profileImageUrl;
     public $userChirpsCount;
     public $firstChirpDate;
     /**
@@ -32,10 +31,6 @@ class UserCard extends Component
         // Assign User's ID
         $id = $user->id;
         $this->id = $id;
-
-        // Assign Profile Image URL
-        $profileImageUrl = $user->profile_image_url;
-        $this->profileImageUrl = $profileImageUrl;
 
         // Assign Chirps Count
         $userChirpsCount = $user->chirps_count;
