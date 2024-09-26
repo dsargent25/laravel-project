@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use App\Service\ImageService;
 use Illuminate\Validation\Rules;
 use App\Http\Controllers\Controller;
+use Exception;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Hash;
@@ -60,10 +61,10 @@ class RegisteredUserController extends Controller
                 $fileContents = $request->profile_image->get();
                 $path = $request->file('profile_image')->storeAs($folder, $filename, 'public');
 
-
                 if(!Storage::disk('public')->put($path, $fileContents))
                 {
-                    return redirect()->back()->withErrors(['profile_image' => 'Image upload failed.']);
+                    throw new Exception('Image upload failed.');
+
                 }
 
                 $imageService->addUserImageRecord($user->id, $path);
@@ -74,10 +75,10 @@ class RegisteredUserController extends Controller
 
                 return redirect(route('dashboard', absolute: false));
 
-            } catch(\Throwable $e) {
+            } catch(Exception $e) {
 
-                \Log::info('Image failed to download.');
-                return redirect()->back();
+                \Log::info($e->getMessage());
+                return redirect()->back()->withErrors(['profile_image' => $e->getMessage()]);
 
             }
 
