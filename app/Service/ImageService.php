@@ -39,7 +39,6 @@ class ImageService
             return false;
         }
     }
-
     public function addUserImageRecord($user_id, $path){
         Image::updateOrCreate(
             ['user_id' => $user_id],
@@ -52,10 +51,8 @@ class ImageService
 
     public function addImageRecord($path){
         Image::updateOrCreate(
-            ['user_id' => '1'],
             [
                 'filename' => $path,
-                'image_role' => 'profile'
             ]
         );
     }

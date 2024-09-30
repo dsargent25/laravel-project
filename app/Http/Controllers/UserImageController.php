@@ -23,7 +23,7 @@ class UserImageController extends Controller
         try{
 
             $request->validate([
-                'image' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif', 'max:2048']
+                'user_image' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif', 'max:2048']
             ]);
 
             if($request->user_image && $request->user_image->extension()){
@@ -32,10 +32,8 @@ class UserImageController extends Controller
                 $filename = "user-image" . '.' . $extension;
                 $folder = 'user-' . Auth::user()->id;
                 $path = $folder . '/' . $filename;
-                $fileContents = $request->user_image->get();
-                $path = $request->file('user_image')->storeAs($folder, $filename, 'public');
 
-                if(!Storage::disk('public')->put($path, $fileContents))
+                if(!$request->file('user_image')->storeAs($folder, $filename, 'public'))
                 {
                     throw new Exception('User image upload failed.');
 
@@ -43,9 +41,19 @@ class UserImageController extends Controller
 
                 $imageService->addImageRecord($path);
 
+                $user = Auth::user();
+                $image = Image::where('filename', $path)->get();
+
+                //If there is already a profile-image associated with the user, detach the existing one.
+                if($user->images()){
+                    $user->images()->detach($image);
+                }
+
+                $user->images()->attach($image);
+
             }
 
-            return redirect(route('/profile', absolute: false));
+            return redirect(route('profile.edit', absolute: false));
 
         } catch(Exception $e) {
 
