@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -65,13 +66,9 @@ class User extends Authenticatable
      return $this->belongsToMany(User::class,'follower_user', 'user_id', 'follower_id')->withTimestamps();
     }
 
-    public function images(){
-     return $this->hasMany(Image::class);
-    }
-
-    public function userImages(): HasManyThrough
+    public function images(): BelongsToMany
     {
-     return $this->hasManyThrough(UserImage::class, Image::class);
+     return $this->belongsToMany(Image::class);
     }
 
 }
