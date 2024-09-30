@@ -50,4 +50,14 @@ class ImageService
         );
     }
 
+    public function addImageRecord($path){
+        Image::updateOrCreate(
+            ['user_id' => '1'],
+            [
+                'filename' => $path,
+                'image_role' => 'profile'
+            ]
+        );
+    }
+
 }
