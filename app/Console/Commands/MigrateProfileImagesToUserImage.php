@@ -25,38 +25,19 @@ class MigrateProfileImagesToUserImage extends Command
     protected $description = 'Takes profile images uploaded in the old format to the new way.';
 
     /**
-     * @var ImageService
-     */
-    protected $imageService;
-
-    /**
-     * Create a new command instance.
-     *
-     * @param ImageService $imageService
-     */
-    public function __construct(ImageService $imageService)
-    {
-        parent::__construct();
-        $this->imageService = $imageService;
-    }
-
-    /**
      * Execute the console command.
      */
-    public function handle()
+    public function handle(ImageService $imageService)
     {
         $this->info('Adding records to image_user pivot table, updating records on images table, and converting filenames to account for new schema...');
 
-        $profileMigrateImages = Image::all()->map->only('id', 'user_id', 'image_role', 'filename')->toArray();
-        foreach ($profileMigrateImages as $profileMigrateImage){
-            $user_id = $profileMigrateImage['user_id'];
-            $image_id = $profileMigrateImage['id'];
-            $profile_role = $profileMigrateImage['image_role'];
-            $filename = $profileMigrateImage['filename'];
+        $profileMigrateImages = Image::all();
 
-            if($profile_role){
-                $user = User::find($user_id);
-                $image = Image::find($image_id);
+        foreach ($profileMigrateImages as $profileMigrateImage){
+
+            if($profileMigrateImage->image_role){
+                $user = User::find($profileMigrateImage->user_id);
+                $image = Image::find($profileMigrateImage->id);
 
                 if($user->images()){
                     $user->images()->detach($image);
@@ -65,10 +46,11 @@ class MigrateProfileImagesToUserImage extends Command
                 $user->images()->attach($image);
 
                 $pattern = '/profile/i';
-                $newFilename = preg_replace($pattern,'user',$filename);
 
-                if(rename(storage_path("app/public/{$filename}"), storage_path("app/public/{$newFilename}"))){
-                    Image::where('user_id', $user_id)->update(['filename' => $newFilename]);
+                $newFilename = preg_replace($pattern,'user', $profileMigrateImage->filename);
+
+                if(rename(storage_path("app/public/{$profileMigrateImage->filename}"), storage_path("app/public/{$newFilename}"))){
+                    Image::where('user_id', $profileMigrateImage->user_id)->update(['filename' => $newFilename]);
                 }
 
             }

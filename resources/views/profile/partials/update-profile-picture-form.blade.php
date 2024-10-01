@@ -4,6 +4,14 @@
         {{ __('Upload/Replace Profile Picture') }}
     </h2>
 
+    @empty(Auth::user()->images->first()->filename)
+        <div class="rounded-lg" style="width:100px;height:100px;background-image:url('{{asset('storage/profile-images/default_profile.jpg')}}');background-position:center;background-size:cover;">
+        </div>
+        @else
+        <div class="rounded-lg" style="width:100px;height:100px;background-image:url('{{asset('storage/'.Auth::user()->images->first()->filename)}}');background-position:center;background-size:cover;">
+        </div>
+    @endif
+
     <p class="mt-1 text-sm text-gray-600">
         {{ __('Ensure your profile image is in the correct format.') }}
     </p>
@@ -21,6 +29,6 @@
 
     </form>
 
-    //Where Delete Form Goes
+    {{-- Where Delete Form Goes --}}
 
 </header>

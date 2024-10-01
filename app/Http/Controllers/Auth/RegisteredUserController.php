@@ -2,13 +2,14 @@
 
 namespace App\Http\Controllers\Auth;
 
+use Exception;
 use App\Models\User;
+use App\Models\Image;
 use Illuminate\View\View;
 use Illuminate\Http\Request;
 use App\Service\ImageService;
 use Illuminate\Validation\Rules;
 use App\Http\Controllers\Controller;
-use Exception;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Hash;
@@ -41,7 +42,7 @@ class RegisteredUserController extends Controller
                     'name' => ['required', 'string', 'max:255'],
                     'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],
                     'password' => ['required', 'confirmed', Rules\Password::defaults()],
-                    'profile_image' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif', 'max:2048'],
+                    'user_image' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif', 'max:2048'],
                 ]);
 
                 $user = User::create([
@@ -52,22 +53,15 @@ class RegisteredUserController extends Controller
 
                 event(new Registered($user));
 
-                if($request->profile_image && $request->profile_image->extension()){
+                if($request->user_image && $request->user_image->extension()){
 
-                $extension = $request->profile_image->extension();
-                $filename = "profile-image" . '.' . $extension;
-                $folder = "user-{$user->id}";
-                $path = $folder . '/' . $filename;
-                $fileContents = $request->profile_image->get();
-                $path = $request->file('profile_image')->storeAs($folder, $filename, 'public');
+                $folder = $imageService->getUserFolder($user);
+                $uploadedFile = $request->user_image;
+                $extension = $uploadedFile->extension();
+                $filename = 'user-image' . '.' . $extension;
 
-                if(!Storage::disk('public')->put($path, $fileContents))
-                {
-                    throw new Exception('Image upload failed.');
-
-                }
-
-                $imageService->addUserImageRecord($user->id, $path);
+                $image = $imageService->uploadImage($uploadedFile, $folder, $filename, $user->id);
+                $user->images()->sync([$image->id]);
 
                 }
 

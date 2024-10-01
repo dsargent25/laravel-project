@@ -2,7 +2,9 @@
 
 namespace App\Service;
 
+use App\Models\User;
 use App\Models\Image;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 
 class ImageService
@@ -39,22 +41,39 @@ class ImageService
             return false;
         }
     }
+
+
+    //This is only used by CopyProfileImageUrls
     public function addUserImageRecord($user_id, $path){
         Image::updateOrCreate(
-            ['user_id' => $user_id],
             [
                 'filename' => $path,
-                'image_role' => 'profile'
+                'user_id' => $user_id
             ]
         );
     }
 
-    public function addImageRecord($path){
-        Image::updateOrCreate(
-            [
-                'filename' => $path,
-            ]
-        );
+
+    //Note: Remove userId dependency ASAP
+    public function uploadImage($uploadedFile, $folder, $filename, $userId){
+
+        if(!$uploadedFile->storeAs($folder, $filename, 'public'))
+        {
+            throw new \Exception('User image upload failed.');
+        }
+
+        $image = Image::updateOrCreate([
+            'filename' => $folder . '/' . $filename,
+            'user_id' => $userId
+        ]);
+
+        return $image;
+
+    }
+
+    public function getUserFolder($user){
+        $folderName = 'user-' . $user->id;
+        return  $folderName;
     }
 
 }

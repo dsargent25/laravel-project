@@ -28,28 +28,18 @@ class UserImageController extends Controller
 
             if($request->user_image && $request->user_image->extension()){
 
-                $extension = $request->user_image->extension();
-                $filename = "user-image" . '.' . $extension;
-                $folder = 'user-' . Auth::user()->id;
-                $path = $folder . '/' . $filename;
-
-                if(!$request->file('user_image')->storeAs($folder, $filename, 'public'))
-                {
-                    throw new Exception('User image upload failed.');
-
-                }
-
-                $imageService->addImageRecord($path);
-
                 $user = Auth::user();
-                $image = Image::where('filename', $path)->get();
+                // This is only needed for IDE (Don't freak out)
+                $user = User::find($user->id);
 
-                //If there is already a profile-image associated with the user, detach the existing one.
-                if($user->images()){
-                    $user->images()->detach($image);
-                }
+                $folder = $imageService->getUserFolder($user);
+                $uploadedFile = $request->user_image;
+                $extension = $uploadedFile->extension();
+                $filename = 'user-image' . '.' . $extension;
 
-                $user->images()->attach($image);
+                $image = $imageService->uploadImage($uploadedFile, $folder, $filename, $user->id);
+                $user->images()->sync([$image->id]);
+
 
             }
 

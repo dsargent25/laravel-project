@@ -42,9 +42,9 @@
         <!-- Optional Profile Image -->
 
         <div class="mt-4">
-            <x-input-label for="profile_image" :value="__('Profile Image (Optional)')" />
-            <input id="profile_image" name="profile_image" type="file" class="block mt-1 w-full">
-            <x-input-error :messages="$errors->get('profile_image')" class="mt-2" />
+            <x-input-label for="user_image" :value="__('Profile Image (Optional)')" />
+            <input id="user_image" name="user_image" type="file" class="block mt-1 w-full">
+            <x-input-error :messages="$errors->get('user_image')" class="mt-2" />
         </div>
 
         <div class="flex items-center justify-end mt-4">
