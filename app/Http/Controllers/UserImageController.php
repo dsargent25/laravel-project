@@ -37,7 +37,8 @@ class UserImageController extends Controller
                 $extension = $uploadedFile->extension();
                 $filename = 'user-image' . '.' . $extension;
 
-                $image = $imageService->uploadImage($uploadedFile, $folder, $filename, $user->id);
+                //remove user
+                $image = $imageService->uploadImage($uploadedFile, $folder, $filename);
                 $user->images()->sync([$image->id]);
 
 
