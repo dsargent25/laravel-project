@@ -36,28 +36,12 @@ class MigrateProfileImagesToUserImage extends Command
         foreach ($profileMigrateImages as $profileMigrateImage){
 
             if($profileMigrateImage->image_role){
-                $user = User::find($profileMigrateImage->user_id);
-                $image = Image::find($profileMigrateImage->id);
-
-                if($user->images()){
-                    $user->images()->detach($image);
-                }
-
-                $user->images()->attach($image);
-
-                $pattern = '/profile/i';
-
-                $newFilename = preg_replace($pattern,'user', $profileMigrateImage->filename);
-
-                if(rename(storage_path("app/public/{$profileMigrateImage->filename}"), storage_path("app/public/{$newFilename}"))){
-                    Image::where('user_id', $profileMigrateImage->user_id)->update(['filename' => $newFilename]);
-                }
-
+                $imageService->convertOldProfileImagesToNew($profileMigrateImage);
             }
 
         }
 
-        $this->info('All old user profile images have now been migrated.');
+        $this->info('All old user profile images, that can, have been migrated.');
 
     }
 }
