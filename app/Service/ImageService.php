@@ -55,8 +55,7 @@ class ImageService
     }
 
 
-    //Note: Remove userId dependency ASAP
-    public function uploadImage($uploadedFile, $folder, $filename, $userId){
+    public function uploadImage($uploadedFile, $folder, $filename){
 
         if(!$uploadedFile->storeAs($folder, $filename, 'public'))
         {
@@ -65,7 +64,6 @@ class ImageService
 
         $image = Image::updateOrCreate([
             'filename' => $folder . '/' . $filename,
-            'user_id' => $userId
         ]);
 
         return $image;
