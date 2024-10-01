@@ -68,7 +68,7 @@ class User extends Authenticatable
 
     public function images(): BelongsToMany
     {
-     return $this->belongsToMany(Image::class);
+     return $this->belongsToMany(Image::class, 'image_user', 'user_id', 'image_id')->withTimestamps();
     }
 
 }

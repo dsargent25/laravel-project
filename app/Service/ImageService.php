@@ -2,8 +2,11 @@
 
 namespace App\Service;
 
+use App\Models\User;
 use App\Models\Image;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
+use Exception;
 
 class ImageService
 {
@@ -40,14 +43,80 @@ class ImageService
         }
     }
 
+
+    //This is only used by CopyProfileImageUrls
     public function addUserImageRecord($user_id, $path){
         Image::updateOrCreate(
-            ['user_id' => $user_id],
             [
                 'filename' => $path,
-                'image_role' => 'profile'
+                'user_id' => $user_id
             ]
         );
+    }
+
+
+    //Note: Remove userId dependency ASAP
+    public function uploadImage($uploadedFile, $folder, $filename, $userId){
+
+        if(!$uploadedFile->storeAs($folder, $filename, 'public'))
+        {
+            throw new \Exception('User image upload failed.');
+        }
+
+        $image = Image::updateOrCreate([
+            'filename' => $folder . '/' . $filename,
+            'user_id' => $userId
+        ]);
+
+        return $image;
+
+    }
+
+    public function getUserFolder($user){
+        $folderName = 'user-' . $user->id;
+        return  $folderName;
+    }
+
+    public function convertOldProfileImagesToNew($image){
+
+        try{
+
+            $user = User::find($image->user_id);
+
+            if($user->images()){
+                $user->images()->detach($image);
+            }
+
+            $user->images()->attach($image);
+
+            $pattern = '/profile/i';
+
+            if (!$image->filename){
+                throw new \Exception("There is no filename in the image record.");
+            }
+
+            $wrongNameExceptionString = "{$image->filename} already follows the new naming scheme or is wrong.";
+
+            if(!preg_match($pattern, $image->filename)){
+                throw new \Exception($wrongNameExceptionString);
+            }
+
+            $newFilename = preg_replace($pattern,'user', $image->filename);
+
+            if(!rename(storage_path("app/public/{$image->filename}"), storage_path("app/public/{$newFilename}"))){
+                throw new \Exception($wrongNameExceptionString);
+            }
+
+            Image::where('user_id', $image->user_id)->update(['filename' => $newFilename]);
+
+        } catch(\Throwable $e) {
+            \Log::info($e->getMessage());
+            echo $e->getMessage() . PHP_EOL;
+            return false;
+        }
+
+        return true;
+
     }
 
 }

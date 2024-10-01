@@ -4,6 +4,7 @@ use App\Http\Controllers\ChirpController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\UserImageController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [UserController::class, 'feed'])->middleware(['auth', 'verified'])->name('dashboard');
@@ -47,6 +48,12 @@ Route::group(['middleware' => ['auth']], function(){
     Route::post('chirps/{chirp}/comments', [CommentController::class, 'store'])->name('chirps.comments.store');
     Route::delete('/comments/{comment}', [CommentController::class, 'destroy'])->name('comments.destroy');
     //End of Routes for Creating, Storing, and Destroying Comments
+
+});
+
+Route::group(['middleware' => ['auth']], function(){
+    Route::post('user-image/', [UserImageController::class, 'store'])->name('user-image.store');
+    Route::delete('user-image/{id}', [UserImageController::class, 'destroy'])->name('user-image.destroy');
 
 });
 
