@@ -118,15 +118,21 @@ class ImageService
 
     }
 
-    //Test by deleting an image. Takes in string 'user-#/user-image.ext'. Returns true/false if file exists.
-    public function deleteImageFromDirectory($publicPath){
+
+    /**
+     * @param string Takes in image path name as 'user-#/user-image.ext'.
+     * Attempts to delete image from directory.
+     * @return bool Returns true if the file is successfully deleted. Returns false if the file is still present in the directory.
+     */
+
+    public function deleteFileAtPath($publicPath){
 
         $filePath = storage_path("app/public/{$publicPath}");
-        if(!File::exists($filePath))
+        File::delete($filePath);
+        if(File::exists($filePath))
         {
             return false;
         }
-        File::delete($filePath);
         return true;
 
     }

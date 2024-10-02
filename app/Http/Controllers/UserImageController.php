@@ -62,10 +62,10 @@ class UserImageController extends Controller
                 throw new \Exception("There is no image to delete.");
             }
 
-            $deleteImageFromDir = $imageService->deleteImageFromDirectory($userImage->filename);
+            $userImageFileDeleteStatus = $imageService->deleteFileAtPath($userImage->filename);
 
-            if ($deleteImageFromDir === false){
-                throw new \Exception("There is no image in the user's directory, but an image record still exists.");
+            if ($userImageFileDeleteStatus === false){
+                throw new \Exception("There is still a user-image in the user's image directory after attempting to delete.");
             }
 
             $userImage->delete();
