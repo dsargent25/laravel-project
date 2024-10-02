@@ -16,7 +16,14 @@
                     </div>
                 </a>
                 <div style="align-items:left;width:200px;">
+
+                    @empty($chirp->images->first()->filename)
+                    @else
+                    <img src="{{asset('storage/'.$chirp->images->first()->filename)}}">
+                    @endif
+
                     <p class="mt-4 text-m text-gray-600">" {{ $message }} "</p>
+
                     <small class="text-sm text-gray-500">{{ $chirpCreatedDate }}</small>
                     <div>
                         @if ($chirp->user->is(auth()->user()))

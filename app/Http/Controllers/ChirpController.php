@@ -2,18 +2,20 @@
 
 namespace App\Http\Controllers;
 
+use Exception;
+use App\Models\User;
 use App\Models\Chirp;
 use App\Models\Comment;
-use App\Models\User;
-use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
-use Illuminate\Http\Response;
-use Illuminate\Support\Arr;
-use Illuminate\Support\Facades\Gate;
-use Illuminate\Support\Facades\Redirect;
 use Illuminate\View\View;
+use Illuminate\Support\Arr;
+use Illuminate\Http\Request;
+use App\Service\ImageService;
+use Illuminate\Http\Response;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Redirect;
 
 class ChirpController extends Controller
 {
@@ -26,12 +28,12 @@ class ChirpController extends Controller
 	        'chirps' => Chirp::with('user')->latest()->get(),
 
 	]);
-    
+
     }
 
     public function show(Chirp $chirp)
     {
-     //   
+     //
     }
 
 
@@ -44,19 +46,61 @@ class ChirpController extends Controller
         //
     }
 
+
+
+
+
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request): RedirectResponse
+    public function store(Request $request, ImageService $imageService): RedirectResponse
+
     {
+
+        try{
+
         $validated = $request->validate([
-		'message' => 'required|string|max:255',
-	]);
+            'message' => 'required|string|max:255',
+        ]);
 
-	$request->user()->chirps()->create($validated);
+        //If the image isn't a valid one.
+        if($request->chirp_image && exif_imagetype($request->chirp_image) === false){
+            throw new \Exception("The image is not valid.");
+        }
 
-	return redirect(route('chirps.index'));
+        //Submit the chirp without the image first (so I can get the Chirp ID)
+        $submittedChirp = $request->user()->chirps()->create($validated);
+
+        //If the chirp wasn't created.
+        if(!$submittedChirp){
+            throw new \Exception("The chirp couldn't be submitted.");
+        }
+
+        //If there is an image do this, otherwise continue the text chirp.
+        if($request->chirp_image){
+
+            $uploadedFile = $request->chirp_image;
+            $folder = $imageService->getUserFolder($request->user());
+            $extension = $uploadedFile->extension();
+            $filename = "chirp-{$submittedChirp->id}-image.{$extension}";
+
+            $image = $imageService->uploadImage($uploadedFile, $folder, $filename);
+
+            $submittedChirp->images()->sync([$image->id]);
+
+            return redirect(route('chirps.index'));
+
+        }
+
+
+        } catch(Exception $e){
+            \Log::info($e->getMessage());
+            return redirect()->back()->withErrors(['message' => $e->getMessage()]);
+        }
     }
+
+
+
 
     public function latest(): View
     {
