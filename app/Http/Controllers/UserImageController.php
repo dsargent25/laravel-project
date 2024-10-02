@@ -13,10 +13,6 @@ use App\Service\ImageService;
 
 class UserImageController extends Controller
 {
-    public function index()
-    {
-
-    }
 
     public function store(Request $request, ImageService $imageService): RedirectResponse
     {
@@ -55,19 +51,33 @@ class UserImageController extends Controller
 
     }
 
-    public function edit()
+
+    public function destroy(ImageService $imageService): RedirectResponse
     {
+        try{
 
-    }
+            $userImage = Auth::user()->images->first();
 
-    public function update()
-    {
+            if (!$userImage) {
+                throw new \Exception("There is no image to delete.");
+            }
 
-    }
+            $deleteImageFromDir = $imageService->deleteImageFromDirectory($userImage->filename);
 
+            if ($deleteImageFromDir === false){
+                throw new \Exception("There is no image in the user's directory, but an image record still exists.");
+            }
 
-    public function destroy()
-    {
+            $userImage->delete();
+
+            return redirect(route('profile.edit', absolute: false));
+
+        } catch(\Throwable $e) {
+
+            \Log::info($e->getMessage());
+            return redirect()->back()->withErrors(['user_image_delete' => $e->getMessage()]);
+
+        }
 
     }
 }

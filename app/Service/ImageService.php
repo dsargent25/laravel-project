@@ -2,11 +2,12 @@
 
 namespace App\Service;
 
+use Exception;
 use App\Models\User;
 use App\Models\Image;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
-use Exception;
 
 class ImageService
 {
@@ -113,6 +114,19 @@ class ImageService
             return false;
         }
 
+        return true;
+
+    }
+
+    //Test by deleting an image. Takes in string 'user-#/user-image.ext'. Returns true/false if file exists.
+    public function deleteImageFromDirectory($publicPath){
+
+        $filePath = storage_path("app/public/{$publicPath}");
+        if(!File::exists($filePath))
+        {
+            return false;
+        }
+        File::delete($filePath);
         return true;
 
     }

@@ -53,7 +53,7 @@ Route::group(['middleware' => ['auth']], function(){
 
 Route::group(['middleware' => ['auth']], function(){
     Route::post('user-image/', [UserImageController::class, 'store'])->name('user-image.store');
-    Route::delete('user-image/{id}', [UserImageController::class, 'destroy'])->name('user-image.destroy');
+    Route::delete('user-image/', [UserImageController::class, 'destroy'])->name('user-image.destroy');
 
 });
 
