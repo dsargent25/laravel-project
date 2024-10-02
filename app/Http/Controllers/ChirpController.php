@@ -31,25 +31,6 @@ class ChirpController extends Controller
 
     }
 
-    public function show(Chirp $chirp)
-    {
-     //
-    }
-
-
-    /**
-     * Show the form for creating a new resource.
-     */
-
-    public function create()
-    {
-        //
-    }
-
-
-
-
-
     /**
      * Store a newly created resource in storage.
      */
@@ -98,8 +79,6 @@ class ChirpController extends Controller
             return redirect()->back()->withErrors(['message' => $e->getMessage()]);
         }
     }
-
-
 
 
     public function latest(): View
