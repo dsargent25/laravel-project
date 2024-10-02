@@ -88,9 +88,9 @@ class ChirpController extends Controller
 
             $submittedChirp->images()->sync([$image->id]);
 
-            return redirect(route('chirps.index'));
-
         }
+
+        return redirect(route('chirps.index'));
 
 
         } catch(Exception $e){
