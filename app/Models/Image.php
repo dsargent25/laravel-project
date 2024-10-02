@@ -23,4 +23,10 @@ class Image extends Model
      return $this->belongsToMany(User::class);
     }
 
+    public function chirps(): BelongsToMany
+    {
+     return $this->belongsToMany(Chirp::class);
+    }
+
+
 }
