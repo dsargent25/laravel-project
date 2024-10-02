@@ -3,10 +3,11 @@
 namespace App\Models;
 
 use App\Events\ChirpCreated;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Chirp extends Model
 {
@@ -28,6 +29,11 @@ class Chirp extends Model
    public function comment(): HasMany
    {
     return $this->hasMany(Comment::class);
+   }
+
+   public function images(): BelongsToMany
+   {
+    return $this->belongsToMany(Image::class);
    }
 
 }
