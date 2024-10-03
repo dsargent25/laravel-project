@@ -19,7 +19,7 @@
 
                     @empty($chirp->images->first()->filename)
                     @else
-                    <img src="{{asset('storage/'.$chirp->images->first()->filename)}}">
+                    <img src="{{asset('storage/'.$chirp->images->first()->filename)}}" class="rounded-md">
                     @endif
 
                     <p class="mt-4 text-m text-gray-600">" {{ $message }} "</p>
