@@ -34,16 +34,23 @@ class UserImageController extends Controller
                 $basename = 'user-image';
                 $filename = $basename . '.' . $extension;
 
-                $redundantFilesStatus = $imageService->deleteRedundantFilesAtPath($folder, $basename);
+                //Checks if there is an old image record.
+                $oldImageRecord = $user->images->first();
 
-                if($redundantFilesStatus === false){
-                    throw new Exception("The old user images were not deleted from the directory properly.");
-                }
+                if($oldImageRecord){
 
-                $redundantImageRecordsStatus = $imageService->deleteRedundantImageRecords($folder, $basename);
+                    //Deletes Last File in Dir for User Image
+                    $oldImageDirStatus = $imageService->deleteFileAtPath($oldImageRecord->filename);
+                    if($oldImageDirStatus === false){
+                        throw new Exception("Last user image file was not deleted properly.");
+                    }
 
-                if($redundantImageRecordsStatus === false){
-                    throw new Exception("The old user images records were not deleted properly.");
+                    //Delete Last Image Record For User Image
+                    $oldImageRecordStatus = $imageService->deleteImageRecord($oldImageRecord);
+                    if($oldImageRecordStatus === false){
+                        throw new Exception("Last user image record was not deleted properly.");
+                    }
+
                 }
 
                 $image = $imageService->uploadImage($uploadedFile, $folder, $filename);

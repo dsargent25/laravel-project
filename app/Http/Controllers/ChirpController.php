@@ -131,16 +131,23 @@ class ChirpController extends Controller
                 $basename = "chirp-{$chirp->id}-image";
                 $filename = $basename . '.' . $extension;
 
-                $redundantFilesStatus = $imageService->deleteRedundantFilesAtPath($folder, $basename);
+                //Checks if there is an old image record.
+                $oldImageRecord = $chirp->images->first();
 
-                if($redundantFilesStatus === false){
-                    throw new Exception("The old chirp images were not deleted from the directory properly.");
-                }
+                if($oldImageRecord){
 
-                $redundantImageRecordsStatus = $imageService->deleteRedundantImageRecords($folder, $basename);
+                    //Deletes Last File in Dir for Chirp Image
+                    $oldImageDirStatus = $imageService->deleteFileAtPath($oldImageRecord->filename);
+                    if($oldImageDirStatus === false){
+                        throw new Exception("Last chirp image file was not deleted properly.");
+                    }
 
-                if($redundantImageRecordsStatus === false){
-                    throw new Exception("The old chirp images records were not deleted properly.");
+                    //Delete Last Image Record For Chirp Image
+                    $oldImageRecordStatus = $imageService->deleteImageRecord($oldImageRecord);
+                    if($oldImageRecordStatus === false){
+                        throw new Exception("Last chirp image record was not deleted properly.");
+                    }
+
                 }
 
                 $image = $imageService->uploadImage($uploadedFile, $folder, $filename);

@@ -56,6 +56,24 @@ class ImageService
     }
 
 
+
+    /**
+     * @param image Takes in the current image connected to the other model.
+     * Attempts to delete image from directory.
+     * @return bool Returns true if the file is successfully deleted. Returns false if the file is still exists.
+     */
+    public function deleteImageRecord($imageRecord){
+
+        $imageRecord->delete();
+
+        if($imageRecord->exists === true){
+            return false;
+        }
+
+        return true;
+    }
+
+
     public function uploadImage($uploadedFile, $folder, $filename){
 
         if(!$uploadedFile->storeAs($folder, $filename, 'public'))
@@ -133,44 +151,6 @@ class ImageService
         {
             return false;
         }
-        return true;
-
-    }
-
-    public function deleteRedundantFilesAtPath($folder, $basename){
-
-        $pattern = storage_path("app/public/{$folder}/{$basename}.*");
-        $files = glob($pattern);
-
-        if($files){
-            File::delete(File::glob(storage_path("app/public/{$folder}/{$basename}*.*")));
-        }
-
-        //If there are still images of that filename in the directory.
-        if(!count($files) === 0){
-            return false;
-        }
-
-        return true;
-
-    }
-
-    public function deleteRedundantImageRecords($folder, $basename){
-        $filenameString = "{$folder}/{$basename}";
-        $oldUserImages = Image::where('filename', 'LIKE', "%{$filenameString}%")->get();
-
-        if($oldUserImages){
-            foreach ($oldUserImages as $oldUserImage){
-                $oldUserImage->delete();
-            }
-
-        }
-
-        //If there are still records in the images table with that filename substring.
-        if(!count($oldUserImages) === 0){
-            return false;
-        }
-
         return true;
 
     }
