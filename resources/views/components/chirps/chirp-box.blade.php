@@ -1,4 +1,8 @@
-<details>
+    @if (request()->routeIs('chirps.index') || request()->routeIs('dashboard'))
+    <details open>
+    @else
+    <details>
+    @endif
     <summary class="chirpToggle">Click Here to Chirp Something!</summary>
     <div class="bg-white rounded-lg shadow-sm p-4 my-5 fixed right-0 bottom-9 w-[400px] z-10">
         <form method="POST" action="{{ route('chirps.store') }}" enctype="multipart/form-data">

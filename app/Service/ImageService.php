@@ -56,6 +56,24 @@ class ImageService
     }
 
 
+
+    /**
+     * @param image Takes in the current image connected to the other model.
+     * Attempts to delete image from directory.
+     * @return bool Returns true if the file is successfully deleted. Returns false if the file is still exists.
+     */
+    public function deleteImageRecord($imageRecord){
+
+        $imageRecord->delete();
+
+        if($imageRecord->exists === true){
+            return false;
+        }
+
+        return true;
+    }
+
+
     public function uploadImage($uploadedFile, $folder, $filename){
 
         if(!$uploadedFile->storeAs($folder, $filename, 'public'))

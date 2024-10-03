@@ -25,15 +25,33 @@ class UserImageController extends Controller
             if($request->user_image && $request->user_image->extension()){
 
                 $user = Auth::user();
-                // This is only needed for IDE (Don't freak out)
+                // This is only needed for IDE
                 $user = User::find($user->id);
 
                 $folder = $imageService->getUserFolder($user);
                 $uploadedFile = $request->user_image;
                 $extension = $uploadedFile->extension();
-                $filename = 'user-image' . '.' . $extension;
+                $basename = 'user-image';
+                $filename = $basename . '.' . $extension;
 
-                //remove user
+                //Checks if there is an old image record.
+                $oldImageRecord = $user->images->first();
+
+                if($oldImageRecord){
+
+                    //Deletes Last File in Dir for User Image
+
+                    if($imageService->deleteFileAtPath($oldImageRecord->filename) === false){
+                        throw new Exception("Last user image file was not deleted properly.");
+                    }
+
+                    //Delete Last Image Record For User Image
+                    if($imageService->deleteImageRecord($oldImageRecord) === false){
+                        throw new Exception("Last user image record was not deleted properly.");
+                    }
+
+                }
+
                 $image = $imageService->uploadImage($uploadedFile, $folder, $filename);
                 $user->images()->sync([$image->id]);
 

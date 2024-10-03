@@ -44,20 +44,16 @@ class ChirpController extends Controller
             'message' => 'required|string|max:255',
         ]);
 
-        //If the image isn't a valid one.
         if($request->chirp_image && exif_imagetype($request->chirp_image) === false){
             throw new \Exception("The image is not valid.");
         }
 
-        //Submit the chirp without the image first (so I can get the Chirp ID)
         $submittedChirp = $request->user()->chirps()->create($validated);
 
-        //If the chirp wasn't created.
         if(!$submittedChirp){
             throw new \Exception("The chirp couldn't be submitted.");
         }
 
-        //If there is an image do this, otherwise continue the text chirp.
         if($request->chirp_image){
 
             $uploadedFile = $request->chirp_image;
@@ -105,29 +101,106 @@ class ChirpController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Chirp $chirp): RedirectResponse
+    public function update(Request $request, Chirp $chirp, ImageService $imageService): RedirectResponse
     {
-        Gate::authorize('update', $chirp);
 
-        $validated = $request->validate([
-            'message' => 'required|string|max:255'
-        ]);
+        try{
 
-        $chirp->update($validated);
+            Gate::authorize('update', $chirp);
 
-        return redirect(route('chirps.index'));
+            $validated = $request->validate([
+                'message' => 'required|string|max:255',
+            ]);
+
+
+            if($request->chirp_image && exif_imagetype($request->chirp_image) === false){
+                throw new \Exception("The image is not valid.");
+            }
+
+            $chirp->update($validated);
+
+            if(!$chirp){
+                throw new \Exception("The chirp could not be updated.");
+            }
+
+            if($request->chirp_image){
+
+                $uploadedFile = $request->chirp_image;
+                $folder = $imageService->getUserFolder($request->user());
+                $extension = $uploadedFile->extension();
+                $basename = "chirp-{$chirp->id}-image";
+                $filename = $basename . '.' . $extension;
+
+                //Checks if there is an old image record.
+                $oldImageRecord = $chirp->images->first();
+
+                if($oldImageRecord){
+
+                    //Deletes Last File in Dir for Chirp Image
+                    if($imageService->deleteFileAtPath($oldImageRecord->filename) === false){
+                        throw new Exception("Last chirp image file was not deleted properly.");
+                    }
+
+                    //Delete Last Image Record For Chirp Image
+                    if($imageService->deleteImageRecord($oldImageRecord) === false){
+                        throw new Exception("Last chirp image record was not deleted properly.");
+                    }
+
+                }
+
+                $image = $imageService->uploadImage($uploadedFile, $folder, $filename);
+
+                $chirp->images()->sync([$image->id]);
+
+
+            }
+
+            return redirect(route('chirps.index'));
+
+
+            } catch(Exception $e){
+                \Log::info($e->getMessage());
+                return redirect()->back()->withErrors(['message' => $e->getMessage()]);
+            }
+
+
     }
+
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Chirp $chirp): RedirectResponse
+    public function destroy(Chirp $chirp, ImageService $imageService): RedirectResponse
     {
+        try{
+
         Gate::authorize('delete', $chirp);
+
+        $chirpImage = $chirp->images->first();
+
+        if($chirpImage){
+
+            $chirpImageFileDeleteStatus = $imageService->deleteFileAtPath($chirpImage->filename);
+
+            if ($chirpImageFileDeleteStatus === false){
+                throw new \Exception("There is still a chirp-image in the user's image directory after attempting to delete.");
+            }
+
+            $chirpImage->delete();
+
+        }
 
         $chirp->delete();
 
         return redirect(route('chirps.index'));
+
+
+        } catch(\Throwable $e) {
+            \Log::info($e->getMessage());
+            //Find place where the error shows up in view
+            return redirect()->back()->withErrors(['message' => $e->getMessage()]);
+
+        }
     }
 
 }
