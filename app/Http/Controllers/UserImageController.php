@@ -40,14 +40,13 @@ class UserImageController extends Controller
                 if($oldImageRecord){
 
                     //Deletes Last File in Dir for User Image
-                    $oldImageDirStatus = $imageService->deleteFileAtPath($oldImageRecord->filename);
-                    if($oldImageDirStatus === false){
+
+                    if($imageService->deleteFileAtPath($oldImageRecord->filename) === false){
                         throw new Exception("Last user image file was not deleted properly.");
                     }
 
                     //Delete Last Image Record For User Image
-                    $oldImageRecordStatus = $imageService->deleteImageRecord($oldImageRecord);
-                    if($oldImageRecordStatus === false){
+                    if($imageService->deleteImageRecord($oldImageRecord) === false){
                         throw new Exception("Last user image record was not deleted properly.");
                     }
 

@@ -137,14 +137,12 @@ class ChirpController extends Controller
                 if($oldImageRecord){
 
                     //Deletes Last File in Dir for Chirp Image
-                    $oldImageDirStatus = $imageService->deleteFileAtPath($oldImageRecord->filename);
-                    if($oldImageDirStatus === false){
+                    if($imageService->deleteFileAtPath($oldImageRecord->filename) === false){
                         throw new Exception("Last chirp image file was not deleted properly.");
                     }
 
                     //Delete Last Image Record For Chirp Image
-                    $oldImageRecordStatus = $imageService->deleteImageRecord($oldImageRecord);
-                    if($oldImageRecordStatus === false){
+                    if($imageService->deleteImageRecord($oldImageRecord) === false){
                         throw new Exception("Last chirp image record was not deleted properly.");
                     }
 
